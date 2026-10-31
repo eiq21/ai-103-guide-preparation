@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Plan de 5 días para el examen AI-103, con temas en gráficos, tarjetas Leitner y simulacro por escenarios.">
-<title>AI-103 en 5 días</title>
+<meta name="description" content="Guía de preparación para el examen AI-103: plan de estudio, temario visual, tarjetas de repaso y simulacro por escenarios.">
+<title>Guía de Preparación AI-103</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600;700&display=swap">
 <style>
@@ -231,8 +231,8 @@ td code{white-space:nowrap}
   <header class="top">
     <div>
       <p class="eyebrow">Examen AI-103 · Developing AI Apps and Agents on Azure</p>
-      <h1>AI-103 en 5 días</h1>
-      <p class="lede sub">Estudia primero lo que más pesa, entiende cada tema con un gráfico y luego ponte a prueba. El plan va del sábado 31 de octubre al jueves 5 de noviembre de 2026.</p>
+      <h1>Guía de Preparación AI-103</h1>
+      <p class="lede sub">Material de estudio organizado según el temario oficial, con priorización por peso, esquemas visuales y práctica por escenarios. Plan de estudio del 31 de octubre al 5 de noviembre de 2026.</p>
     </div>
     <div class="count"><b id="daysleft">5</b><span id="dayslabel">días para el examen</span></div>
   </header>
@@ -240,7 +240,7 @@ td code{white-space:nowrap}
 <nav class="tabs" aria-label="Secciones">
   <div class="wrap"><div class="tabrow" role="tablist">
     <button role="tab" data-v="plan">Plan</button>
-    <button role="tab" data-v="temas">Temas con gráficos</button>
+    <button role="tab" data-v="temas">Temario</button>
     <button role="tab" data-v="tarjetas">Tarjetas</button>
     <button role="tab" data-v="simulacro">Simulacro</button>
     <button role="tab" data-v="repaso">Repaso final</button>
@@ -252,35 +252,35 @@ td code{white-space:nowrap}
 <!-- PLAN -->
 <section class="view" id="v-plan">
   <div class="block">
-    <div class="head"><h2>Dónde están los puntos</h2>
-    <p class="lede">Dos áreas suman entre 55 y 65 % del examen. Por eso les dedicamos el fin de semana completo.</p></div>
+    <div class="head"><h2>Distribución del examen</h2>
+    <p class="lede">Dos dominios concentran entre 55 y 65 % del examen, por lo que reciben la mayor dedicación del plan.</p></div>
     <div class="weights" id="weights"></div>
     <div class="waxis"><div><span>0 %</span><span>10 %</span><span>20 %</span><span>30 %</span><span>40 %</span></div></div>
     <p class="note">La parte sólida es el mínimo oficial y la parte clara llega al máximo. Temario vigente desde el 16 de abril de 2026.</p>
   </div>
 
   <div class="block">
-    <div class="head"><h2>El método: 4 pasos por bloque</h2>
-    <p class="lede">Combina Pareto, práctica de recuperación y repetición espaciada con cajas Leitner. Leer y releer rinde poco a 5 días del examen; recordar sin mirar rinde mucho más. Repite este ciclo de 90 minutos en cada tema.</p></div>
+    <div class="head"><h2>Metodología de estudio</h2>
+    <p class="lede">Combina priorización de Pareto, práctica de recuperación y repetición espaciada con el sistema Leitner. Cada tema se estudia en un ciclo de 90 minutos.</p></div>
     <div class="method">
-      <div><span class="t">15 min</span><b>Ver</b><p>Abre el gráfico del tema y explícalo en voz alta sin leer.</p></div>
-      <div><span class="t">30 min</span><b>Hacer</b><p>Haz el laboratorio o sigue el quickstart oficial enlazado.</p></div>
-      <div><span class="t">30 min</span><b>Recuperar</b><p>Responde el simulacro del dominio sin ayuda y sin apuntes.</p></div>
-      <div><span class="t">15 min</span><b>Corregir</b><p>Anota por qué fallaste y pasa esas tarjetas a la caja 1.</p></div>
+      <div><span class="t">15 min</span><b>Revisar</b><p>Revisar el esquema del tema y explicarlo sin apoyo de notas.</p></div>
+      <div><span class="t">30 min</span><b>Practicar</b><p>Completar el laboratorio o el quickstart oficial.</p></div>
+      <div><span class="t">30 min</span><b>Recuperar</b><p>Responder el simulacro del dominio sin material de consulta.</p></div>
+      <div><span class="t">15 min</span><b>Corregir</b><p>Registrar la causa de cada error y devolver esas tarjetas a la caja 1.</p></div>
     </div>
   </div>
 
   <div class="block">
-    <div class="head"><h2>Calendario</h2>
-    <p class="lede">Supone 4 horas el sábado y el domingo, y 2 h 30 de lunes a miércoles: 15 h 30 en total. Si tienes menos tiempo, recorta primero el laboratorio del martes, nunca el simulacro.</p></div>
+    <div class="head"><h2>Cronograma</h2>
+    <p class="lede">Se estiman 4 horas el sábado y el domingo, y 2 h 30 de lunes a miércoles: 15 h 30 en total. Si el tiempo disponible es menor, conviene reducir primero los laboratorios y conservar siempre el simulacro.</p></div>
     <div class="progress" aria-hidden="true"><i id="planbar"></i></div>
     <p class="note" id="plantext">0 tareas completadas</p>
     <div class="days" id="days"></div>
   </div>
 
   <div class="block">
-    <div class="head"><h2>Tres laboratorios que valen la pena</h2>
-    <p class="lede">El examen puede incluir laboratorios: Microsoft da 120 minutos, la duración de los exámenes que pueden traerlos. Si tienes una suscripción de Azure, haz estos tres. Si no, lee el código del quickstart y escribe de memoria qué hace cada línea.</p></div>
+    <div class="head"><h2>Laboratorios recomendados</h2>
+    <p class="lede">El examen puede incluir laboratorios: Microsoft asigna 120 minutos, la duración de los exámenes que pueden incorporarlos. Con una suscripción de Azure, se recomienda completar estos tres. Sin ella, conviene revisar el código de cada quickstart y describir qué hace cada línea.</p></div>
     <div class="split">
       <div class="tile"><b>Sábado: primera llamada keyless</b>Crea un proyecto, despliega un modelo y llámalo con <code>DefaultAzureCredential</code>. <a href="https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry" target="_blank" rel="noopener">Abrir guía</a></div>
       <div class="tile"><b>Domingo: agente con herramienta</b>Crea un prompt agent, usa <code>conversations</code> y conecta un MCP con aprobación. <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/quickstarts/prompt-agent" target="_blank" rel="noopener">Abrir quickstart</a></div>
@@ -292,8 +292,8 @@ td code{white-space:nowrap}
 <!-- TEMAS -->
 <section class="view" id="v-temas" hidden>
   <div class="block">
-    <div class="head"><h2>Temas con gráficos</h2>
-    <p class="lede">Cada dominio responde lo que el examen suele pedir: elegir el servicio correcto para un escenario. Los nombres van en inglés para que los reconozcas en el examen.</p></div>
+    <div class="head"><h2>Temario</h2>
+    <p class="lede">Cada dominio se enfoca en la selección del servicio adecuado para cada escenario. Los términos técnicos se mantienen en inglés para facilitar su reconocimiento.</p></div>
     <div class="chips" id="domchips"></div>
   </div>
 
@@ -367,7 +367,7 @@ td code{white-space:nowrap}
         <div class="step gate"><b>3 · Tool response</b>Solo agentes</div><span class="arw">→</span>
         <div class="step gate"><b>4 · Output</b>Modelos y agentes</div>
       </div>
-      <h4>Nivel de bloqueo: el nombre confunde</h4>
+      <h4>Niveles de bloqueo</h4>
       <div class="tw" style="padding:8px"><div class="sev" style="min-width:330px">
         <div class="n h">Nivel</div><div class="h">Severidad baja</div><div class="h">Media</div><div class="h">Alta</div>
         <div class="n">Low</div><div>pasa</div><div>pasa</div><div class="x">bloquea</div>
@@ -376,7 +376,7 @@ td code{white-space:nowrap}
       </div></div>
     </div>
 
-    <div class="traps"><h4>Trampas del dominio</h4><ul>
+    <div class="traps"><h4>Errores frecuentes</h4><ul>
       <li>El guardrail de un agente reemplaza por completo al de su modelo. Si no asignas uno, hereda el del despliegue.</li>
       <li>Los agentes solo admiten <b>Annotate and block</b>. Solo los modelos pueden usar <b>Annotate</b> sin bloquear.</li>
       <li>Spotlighting y Groundedness se aplican a modelos, no a agentes.</li>
@@ -478,7 +478,7 @@ print(r.output_text)</code></pre>
       </div>
     </div>
 
-    <div class="traps"><h4>Trampas del dominio</h4><ul>
+    <div class="traps"><h4>Errores frecuentes</h4><ul>
       <li><code>allowed_tools=[]</code> permite <b>todas</b> las herramientas del servidor MCP, no ninguna.</li>
       <li>Function calling no ejecuta nada por sí solo. Tu app devuelve el resultado al modelo.</li>
       <li>Memory es para lo aprendido del usuario, no para documentos corporativos.</li>
@@ -530,7 +530,7 @@ print(r.output_text)</code></pre>
       <p>Single-task, el modo standard, procesa un archivo por tarea. Pro mode razonaba en varios pasos sobre documentos y referencias. Esa versión preview se retiró, y su sucesor es <b>agentic mode</b> en <code>2026-06-01-preview</code>. Pro mode sigue en el temario, así que entiende la diferencia conceptual.</p>
       <p>Para video usa <code>prebuilt-videoSearch</code>: segmenta por escenas, transcribe y describe cada segmento.</p>
     </div>
-    <div class="traps"><h4>Trampas del dominio</h4><ul>
+    <div class="traps"><h4>Errores frecuentes</h4><ul>
       <li><code>dall-e-3</code> se retiró el 4 de marzo de 2026. Una opción con DALL·E probablemente sea el distractor.</li>
       <li>Sora rechaza imágenes de entrada con rostros humanos y no genera personas reales.</li>
       <li>El texto dentro de una imagen puede ser una inyección indirecta. Trátalo como contenido no confiable.</li>
@@ -575,7 +575,7 @@ print(r.output_text)</code></pre>
         <tr><td>Controlar pronunciación y pausas al sintetizar</td><td><b>SSML</b></td></tr>
       </table></div>
     </div>
-    <div class="traps"><h4>Trampas del dominio</h4><ul>
+    <div class="traps"><h4>Errores frecuentes</h4><ul>
       <li>Voice Live no pide desplegar los modelos que gestiona de forma nativa.</li>
       <li>Voice Live funciona por WebSocket y se conecta desde tu backend.</li>
       <li>La tarifa Pro, Standard o Lite depende del modelo: no se elige por separado.</li>
@@ -642,7 +642,7 @@ print(r.output_text)</code></pre>
         <tr><td>Mi propio esquema</td><td>Custom con <code>baseAnalyzerId</code>: document, image, audio o video</td><td>Sí</td></tr>
       </table></div>
     </div>
-    <div class="traps"><h4>Trampas del dominio</h4><ul>
+    <div class="traps"><h4>Errores frecuentes</h4><ul>
       <li>El método <b>Extract</b> solo funciona con documentos. Para video o audio usa Generate o Classify.</li>
       <li>Confianza y grounding se activan con <code>estimateFieldSourceAndConfidence</code>.</li>
       <li>Si cambias el modelo de embeddings debes vectorizar de nuevo todo el índice.</li>
@@ -656,8 +656,8 @@ print(r.output_text)</code></pre>
 <!-- TARJETAS -->
 <section class="view" id="v-tarjetas" hidden>
   <div class="block">
-    <div class="head"><h2>Tarjetas Leitner</h2>
-    <p class="lede">Intenta responder en voz alta antes de voltear. Las que fallas vuelven primero, así inviertes tu tiempo en lo que aún no recuerdas.</p></div>
+    <div class="head"><h2>Tarjetas de repaso</h2>
+    <p class="lede">Cada tarjeta debe responderse antes de voltearla. Las respuestas incorrectas regresan primero, para concentrar el repaso en lo que aún no se domina.</p></div>
     <div class="chips" id="cardchips"></div>
     <div class="leitner" id="leitner"></div>
     <div id="cardarea" class="block"></div>
@@ -668,12 +668,12 @@ print(r.output_text)</code></pre>
 <section class="view" id="v-simulacro" hidden>
   <div class="block">
     <div class="head"><h2>Simulacro por escenarios</h2>
-    <p class="lede">Preguntas originales escritas para entrenar decisiones; no son preguntas reales del examen. Tu meta de entrenamiento es llegar a 80 % en cada dominio.</p></div>
+    <p class="lede">Preguntas originales orientadas a la toma de decisiones; no provienen del examen real. La meta recomendada es alcanzar 80 % en cada dominio.</p></div>
     <div class="chips" id="quizchips"></div>
     <div id="quizarea" class="block"></div>
   </div>
   <div class="block">
-    <h3>Tu resultado por dominio</h3>
+    <h3>Resultado por dominio</h3>
     <div class="scale"><i id="scalebar"></i><u></u></div>
     <div class="scalel"><span>0</span><span id="scaletxt">Sin respuestas</span><span>1000</span></div>
     <div class="bydom" id="bydom"></div>
@@ -685,19 +685,19 @@ print(r.output_text)</code></pre>
 <!-- REPASO -->
 <section class="view" id="v-repaso" hidden>
   <div class="block">
-    <div class="head"><h2>Reglas del día del examen</h2></div>
+    <div class="head"><h2>Condiciones del examen</h2></div>
     <div class="split">
       <div class="tile"><b>Tiempo</b>120 minutos de examen, 140 de asiento. Mínimo aprobatorio: 700.</div>
       <div class="tile"><b>Preguntas</b>La mayoría de los exámenes trae 40-60. Revisa los tipos en el sandbox.</div>
       <div class="tile"><b>Microsoft Learn</b>Disponible durante el examen, pero el reloj no se detiene. Úsalo para confirmar, no para aprender.</div>
       <div class="tile"><b>Pausas</b>El reloj sigue, y después de una pausa no puedes volver a las preguntas ya vistas.</div>
       <div class="tile"><b>Bloques problema-solución</b>Normalmente no permiten volver atrás. Decide cada una antes de avanzar.</div>
-      <div class="tile"><b>Si no apruebas</b>Puedes repetirlo tras 24 horas. Después, la espera depende de la política de reintentos.</div>
+      <div class="tile"><b>Reintento</b>Se permite repetir el examen tras 24 horas. Después, la espera depende de la política de reintentos.</div>
     </div>
   </div>
   <div class="block">
     <div class="head"><h2>Búsquedas rápidas en Learn</h2>
-    <p class="lede">Practica encontrar estas páginas en menos de un minuto. Es lo que más tiempo te ahorra si dudas durante el examen.</p></div>
+    <p class="lede">Conviene practicar la localización de estas páginas en menos de un minuto para ahorrar tiempo durante el examen.</p></div>
     <div class="tw"><table>
       <tr><th>Duda</th><th>Busca</th></tr>
       <tr><td>Tipo de despliegue</td><td>deployment types Foundry Models</td></tr>
@@ -709,7 +709,7 @@ print(r.output_text)</code></pre>
     </table></div>
   </div>
   <div class="block">
-    <div class="head"><h2>Acordeón de 20 minutos</h2></div>
+    <div class="head"><h2>Resumen de repaso</h2></div>
     <div class="sheet">
       <div class="tile"><h4>Despliegue</h4><ul><li>Sin requisito: Global Standard</li><li>Datos en UE: Data Zone</li><li>Constante y crítico: PTU</li><li>Asíncrono y barato: Batch, 50 % menos</li></ul></div>
       <div class="tile"><h4>Identidad</h4><ul><li>Sin secretos: managed identity</li><li>Solo invoca: Agent Consumer</li><li>Construye: Foundry User</li><li>Cuota: Usages Reader en suscripción</li></ul></div>
@@ -723,7 +723,7 @@ print(r.output_text)</code></pre>
     </div>
   </div>
   <div class="block">
-    <div class="head"><h2>Por qué pueden diferir algunos nombres</h2></div>
+    <div class="head"><h2>Cambios de nomenclatura</h2></div>
     <div class="warnbox"><p>El temario es del 16 de abril de 2026 y Foundry ha cambiado desde entonces. Si el examen usa <b>Azure AI User</b>, equivale a <b>Foundry User</b>. Si menciona pro mode o workflows, responde según el concepto. Microsoft indica que casi todas las preguntas cubren funciones GA, pero puede incluir preview si es de uso común. Las versiones traducidas se actualizan unas ocho semanas después de la inglesa.</p></div>
   </div>
   <div class="block">
@@ -792,9 +792,9 @@ var PLAN=[
   ["Practice Assessment completo y con tiempo.","1 h"],
   ["Refuerza solo tus dos áreas más débiles.","45 min"],
   ["Exam sandbox y búsquedas rápidas en Learn.","30 min"],
-  ["Acordeón completo. Cierra y descansa.","15 min"]]},
+  ["Resumen de repaso completo y descanso.","15 min"]]},
  {d:"2026-11-05",n:"Jue 5",h:"Examen",t:"Día del examen",k:[
-  ["Acordeón una vez. No estudies temas nuevos.","20 min"],
+  ["Resumen de repaso una sola vez, sin temas nuevos.","20 min"],
   ["Si es en línea, prueba tu equipo e inicia el check-in con antelación.","30 min"],
   ["Rinde el examen. Marca para revisión lo que dudes.","120 min"]]}
 ];
@@ -979,7 +979,7 @@ function renderCard(){
   $("leitner").innerHTML=[["Nuevas",0],["Caja 1: repetir hoy",1],["Caja 2: repetir mañana",2],["Caja 3: dominadas",3]].map(function(x){return '<div class="box"><b>'+n[x[1]]+'</b><span>'+x[0]+'</span></div>'}).join("");
   var c=CARDS[cur];
   var h='<button class="card" id="flip"><span class="tag" style="color:var(--d'+c[0]+')">D'+c[0]+' · '+DOMS[c[0]]+'</span><span class="front">'+esc(c[1])+'</span>'+
-    (flip?'<span class="back">'+esc(c[2])+'</span>':'<span class="note">Responde en voz alta. Luego pulsa para voltear.</span>')+'</button>';
+    (flip?'<span class="back">'+esc(c[2])+'</span>':'<span class="note">Seleccione la tarjeta para ver la respuesta.</span>')+'</button>';
   if(flip)h+='<div class="rate"><button class="btn" data-r="1">No lo sabía</button><button class="btn" data-r="2">Dudé</button><button class="btn pri" data-r="3">Lo sabía</button></div>';
   $("cardarea").innerHTML=h;
 }
