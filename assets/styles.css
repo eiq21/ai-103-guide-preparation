@@ -210,3 +210,17 @@ pre.cod{background:var(--bg);color:var(--ink);border:1px solid var(--line)}
 .revg .btn{padding:6px;text-align:center;font-weight:500}
 .revg .hecho{background:var(--tint)}
 .revg .marc{border-width:2px}
+
+/* Colores de código: cada color indica una función */
+pre{--c-kw:#ff9ec4;--c-cls:#7fd8ff;--c-fn:#ffd84d;--c-par:#ffb074;--c-key:#8fb8ff;--c-str:#a5e39a;--c-cte:#d3b6ff;--c-com:#a9a597}
+pre.cod,.hl-ley{--c-kw:#b0226a;--c-cls:#005f8f;--c-fn:#8a5a00;--c-par:#b84a00;--c-key:#2546b8;--c-str:#1c7a33;--c-cte:#6a2bb0;--c-com:#6b6759}
+.h-kw{color:var(--c-kw);font-weight:600}
+.h-cls{color:var(--c-cls);font-weight:600}
+.h-fn{color:var(--c-fn);font-weight:600}
+.h-par{color:var(--c-par)}
+.h-key{color:var(--c-key)}
+.h-str{color:var(--c-str)}
+.h-cte{color:var(--c-cte)}
+.h-com{color:var(--c-com);font-style:italic}
+.hl-ley{font-size:14px;line-height:1.7}
+.hl-ley span{font-family:var(--mono);font-size:13px;margin-right:10px;white-space:nowrap}
