@@ -9,7 +9,7 @@ function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").repl
 var app=$("#app");
 
 var LEC=[];
-MODULOS.forEach(function(m){m.lecciones.forEach(function(l,i){l.id=m.n+"-"+(i+1);l.num=m.n+"."+(i+1);l.mod=m;LEC.push(l)})});
+MODULOS.forEach(function(m){m.lecciones.forEach(function(l,i){l.id=m.n+"-"+(i+1);l.num=m.n+"."+(i+1);l.mod=m;l.min+=(m.n===3?40:25);LEC.push(l)})});
 var AVISO_LECCION={};
 LEC.forEach(function(l){l.ej.forEach(function(i){AVISO_LECCION[i]=l})});
 function siguientePendiente(){for(var i=0;i<LEC.length;i++)if(!est.hechas[LEC[i].id])return LEC[i];return null}
@@ -17,8 +17,8 @@ function cuentaHechas(){return LEC.filter(function(l){return est.hechas[l.id]}).
 function barra(){$("#prog").textContent=cuentaHechas()+"/"+LEC.length+" lecciones"}
 
 var RUTAS={
- 5:[["Día 1","Módulo 1 · Fundamentos de Foundry","3 h"],["Día 2","Módulo 2 · Aplicaciones y agentes","3 h 30"],["Día 3","Módulos 3 y 4 · Calidad, recuperación y extracción","4 h"],["Día 4","Módulo 5 · Visión, texto y voz","2 h 30"],["Día 5","Simulacro, repaso y preparación final","2 h"]],
- 4:[["Día 1","Módulo 1 · Fundamentos de Foundry","3 h"],["Día 2","Módulos 2 y 3 · Agentes, calidad y seguridad","5 h"],["Día 3","Módulos 4 y 5 · Recuperación, visión, texto y voz","5 h"],["Día 4","Simulacro, repaso y preparación final","2 h"]]
+ 5:[["Día 1","Módulo 1 · Fundamentos de Foundry","5 h"],["Día 2","Módulo 2 · Aplicaciones y agentes","6 h"],["Día 3","Módulos 3 y 4 · Calidad, recuperación y extracción","7 h 30"],["Día 4","Módulo 5 · Visión, texto y voz","4 h 30"],["Día 5","Examen de práctica y repaso final","3 h"]],
+ 4:[["Día 1","Módulo 1 · Fundamentos de Foundry","5 h"],["Día 2","Módulos 2 y 3 · Agentes, calidad y seguridad","9 h"],["Día 3","Módulos 4 y 5 · Recuperación, visión, texto y voz","9 h"],["Día 4","Examen de práctica y repaso final","3 h"]]
 };
 
 /* Inicio */
@@ -31,15 +31,15 @@ function inicio(){
      m.lecciones.map(function(l){return '<a class="les" href="#/lesson/'+l.id+'"><span class="num">'+l.num+'</span><span>'+l.t+'</span><span class="tm">'+l.min+' min</span><span class="ok">'+(est.hechas[l.id]?"✓":"")+'</span></a>'}).join("")+'</div>';
   }).join("");
   app.innerHTML=
-  '<section class="pad hero"><p class="tagv">// exam AI-103 · developing AI apps and agents on Azure</p><h1>Guía de preparación <mark>AI-103</mark></h1><p class="lead">Un curso breve para preparar el examen en 4 o 5 días. Cada lección explica un tema, lo aplica a un caso real y termina con ejercicios.</p><div class="cta">'+
+  '<section class="pad hero"><p class="tagv">// exam AI-103 · developing AI apps and agents on Azure</p><h1>Guía de preparación <mark>AI-103</mark></h1><p class="lead">Un curso breve para preparar el examen en 4 o 5 días. Cada lección profundiza en un tema, lo aplica a un caso práctico y termina con preguntas de nivel examen.</p><div class="cta">'+
    (sig?'<a class="btn pri" href="#/lesson/'+sig.id+'">'+(iniciado?"Continuar: ":"Comenzar: ")+sig.num+' '+sig.t+'</a>':'<a class="btn pri" href="#/mock-exam">Hacer el simulacro</a>')+
    '<a class="btn" href="#index">Ver índice</a></div></section>'+
   '<section class="pad sec"><span class="secn">§00</span><h2>Cómo funciona.</h2><div class="stack"><p class="lead">Todas las lecciones siguen el mismo orden. A lo largo del curso se construye una solución para Contoso Seguros, una aseguradora ficticia.</p>'+
-   '<div class="steps4"><div><b>1. Concepto</b><small>Lo esencial, con un esquema.</small></div><div><b>2. Ejemplo</b><small>El tema aplicado al caso.</small></div><div><b>3. Tropiezos</b><small>Errores que el examen aprovecha.</small></div><div><b>4. Ahora prueba</b><small>Ejercicios con explicación.</small></div></div></div></section>'+
+   '<div class="steps4"><div><b>1. Concepto</b><small>Lo esencial, con un esquema.</small></div><div><b>2. A fondo</b><small>Detalles, comparaciones y código.</small></div><div><b>3. Ejemplo y tropiezos</b><small>El tema aplicado al caso y errores comunes.</small></div><div><b>4. Preguntas</b><small>Ejercicios y nivel examen, con explicación.</small></div></div></div></section>'+
   '<section class="pad sec"><span class="secn">§01</span><h2>Qué evalúa el examen.</h2><div class="stack"><p class="lead">Dos dominios concentran entre 55 y 65 % del examen, por eso los módulos 1 y 2 tienen mayor duración. Negro: peso mínimo. Amarillo: peso máximo.</p><div>'+pesos+'</div></div></section>'+
-  '<section class="pad sec"><span class="secn">§02</span><h2>Elige tu ruta.</h2><div class="stack"><div class="switch" style="justify-self:start"><button data-ruta="4" aria-pressed="'+(est.ruta===4)+'">4 días</button><button data-ruta="5" aria-pressed="'+(est.ruta===5)+'">5 días</button></div><div class="route">'+ruta+'</div></div></section>'+
+  '<section class="pad sec"><span class="secn">§02</span><h2>Elige tu ruta.</h2><div class="stack"><div class="switch" style="justify-self:start"><button data-ruta="4" aria-pressed="'+(est.ruta===4)+'">4 días</button><button data-ruta="5" aria-pressed="'+(est.ruta===5)+'">5 días</button></div><div class="route">'+ruta+'</div><p class="note">Con menos tiempo disponible, conviene priorizar Concepto, Tropiezos y Preguntas nivel examen, y dejar A fondo para los temas con más errores.</p></div></section>'+
   '<section class="pad sec" id="index"><span class="secn">§03</span><h2>Índice.</h2><div class="stack">'+indice+'</div></section>'+
-  '<section class="pad sec"><span class="secn">§04</span><h2>Práctica final.</h2><div class="grid2"><a class="linkcard" href="#/mock-exam"><b>Simulacro</b><span>30 preguntas según el peso de cada dominio.</span></a><a class="linkcard" href="#/flashcards"><b>Tarjetas</b><span>'+TARJETAS.length+' conceptos clave para repasar.</span></a><a class="linkcard" href="#/exam-day"><b>Día del examen</b><span>Condiciones, gestión del tiempo y resumen.</span></a></div></section>';
+  '<section class="pad sec"><span class="secn">§04</span><h2>Práctica final.</h2><div class="grid2"><a class="linkcard" href="#/mock-exam"><b>Examen de práctica</b><span>Preguntas de varios tipos, caso de estudio y 120 minutos.</span></a><a class="linkcard" href="#/flashcards"><b>Tarjetas</b><span>'+TARJETAS.length+' conceptos clave para repasar.</span></a><a class="linkcard" href="#/exam-day"><b>Día del examen</b><span>Condiciones, gestión del tiempo y resumen.</span></a></div></section>';
 }
 
 /* Ejercicio */
@@ -72,70 +72,90 @@ function pintarPregunta(el,idx,n){
 function leccion(id){
   var l=null,i=-1;LEC.forEach(function(x,j){if(x.id===id){l=x;i=j}});
   if(!l){location.hash="#/";return}
-  var ant=LEC[i-1],sig=LEC[i+1];
+  var ant=LEC[i-1],sig=LEC[i+1],n=0;
+  var ex=EXTRA[l.id]||{secciones:[],preguntas:[]};
+  var secs=ex.secciones.length?'<h2><small>§2</small>A fondo</h2>'+ex.secciones.map(function(x){return '<h3>'+x.t+'</h3>'+x.html}).join(""):'';
   var docs=l.docs.map(function(d){return '<li><a href="'+DOC+d[1]+'" target="_blank" rel="noopener">'+d[0]+'</a></li>'}).join("");
   app.innerHTML='<article class="pad"><div class="meta"><a href="#index">← índice</a><span>/</span><span>módulo '+l.mod.n+': '+l.mod.t+'</span><span>/</span><span>'+l.num+'</span><span>/</span><span>'+l.min+' min</span></div>'+
    '<div class="prose"><h1 class="les-t">'+l.t+'</h1><p class="obj"><b>Objetivo:</b> '+l.obj+'</p>'+
    '<h2><small>§1</small>Concepto</h2>'+l.html+
-   '<h2><small>§2</small>Ejemplo: Contoso Seguros</h2><div class="case">'+l.ejemplo+'</div>'+
-   '<h2><small>§3</small>Tropiezos frecuentes</h2><div class="pit"><ul>'+l.tropiezos.map(function(t){return '<li>'+t+'</li>'}).join("")+'</ul></div>'+
-   '<h2><small>§4</small>Ahora prueba</h2><div class="stack" id="ej"></div>'+
+   secs+
+   '<h2><small>§'+(n=3)+'</small>Ejemplo: Contoso Seguros</h2><div class="case">'+l.ejemplo+'</div>'+
+   '<h2><small>§4</small>Tropiezos frecuentes</h2><div class="pit"><ul>'+l.tropiezos.map(function(t){return '<li>'+t+'</li>'}).join("")+'</ul></div>'+
+   '<h2><small>§5</small>Comprueba lo aprendido</h2><div class="stack" id="ej"></div>'+
    '<div class="lab"><b>Práctica:</b> '+l.practica+'</div>'+
-   '<h2><small>§5</small>Para profundizar</h2><ul>'+docs+'</ul>'+
+   (ex.preguntas.length?'<h2><small>§6</small>Preguntas nivel examen</h2><p>Estas preguntas siguen el formato de una certificación: escenario, restricciones y opciones plausibles.</p><div class="stack" id="exq"></div>':'')+
+   '<h2><small>§7</small>Para profundizar</h2><ul>'+docs+'</ul>'+
    '<div class="done"><button class="btn pri" id="hecha">'+(est.hechas[l.id]?"Lección completada ✓":"Marcar como completada")+'</button></div></div></article>'+
    '<nav class="pn">'+(ant?'<a href="#/lesson/'+ant.id+'"><small>← anterior</small>'+ant.num+' '+ant.t+'</a>':'<a href="#/"><small>← inicio</small>Portada</a>')+
    (sig?'<a href="#/lesson/'+sig.id+'"><small>siguiente →</small>'+sig.num+' '+sig.t+'</a>':'<a href="#/mock-exam"><small>siguiente →</small>Simulacro</a>')+'</nav>';
   var cont=$("#ej");
   l.ej.forEach(function(idx,j){var d=document.createElement("div");cont.appendChild(d);pintarPregunta(d,idx,j+1)});
+  var cx=$("#exq");if(cx)ex.preguntas.forEach(function(q,j){var d=document.createElement("div");cx.appendChild(d);EX.monta(d,q,{modo:"practica",rotulo:"pregunta "+(j+1)})});
   $("#hecha").addEventListener("click",function(){
     est.hechas[l.id]=!est.hechas[l.id];guardar();barra();
     this.textContent=est.hechas[l.id]?"Lección completada ✓":"Marcar como completada";
   });
 }
 
-/* Simulacro */
-function elegir(){
-  var cupos={1:9,2:11,3:3,4:3,5:4},r=[];
-  Object.keys(cupos).forEach(function(d){
-    var p=[];PREGUNTAS.forEach(function(q,i){if(q[0]==d)p.push(i)});
-    p.sort(function(){return Math.random()-.5});r=r.concat(p.slice(0,cupos[d]));
-  });
-  return r.sort(function(){return Math.random()-.5});
+/* Simulacro con formato de examen */
+function bancoExamen(){
+  var r=[];Object.keys(EXTRA).forEach(function(id){EXTRA[id].preguntas.forEach(function(q){r.push({q:q,lec:id})})});return r;
 }
+function armar(){
+  var cupos={1:12,2:15,3:6,4:6,5:6},pool=bancoExamen(),sel=[];
+  Object.keys(cupos).forEach(function(d){sel=sel.concat(EX.mezcla(pool.filter(function(x){return x.q.d==d})).slice(0,cupos[d]))});
+  sel=EX.mezcla(sel);
+  var caso=EX.mezcla(CASOS)[0];
+  if(caso)caso.preguntas.forEach(function(q){sel.push({q:q,caso:caso})});
+  return sel;
+}
+var RELOJ=null;
 function simulacro(){
-  var lista=elegir(),pos=0,bien={};
-  function resultado(){
-    var ok=lista.filter(function(i){return bien[i]}).length,pc=Math.round(ok/lista.length*100);
-    var fall=lista.filter(function(i){return !bien[i]});
-    var porD=DOMINIOS.map(function(d){var t=lista.filter(function(i){return PREGUNTAS[i][0]===d.n}),o=t.filter(function(i){return bien[i]}).length;
-      return [d.t,o+"/"+t.length,Math.round(o/t.length*100)+" %"]});
-    app.innerHTML='<section class="pad"><div class="prose"><span class="secn">resultado</span><p class="score">'+pc+' %</p><p>'+ok+' de '+lista.length+' respuestas correctas. La meta recomendada es 80 %. Este valor no predice el puntaje oficial.</p>'+
-     tabla(["Dominio","Aciertos","%"],porD)+
-     (fall.length?'<h2>Para reforzar</h2><div class="stack">'+fall.map(function(i){var l=AVISO_LECCION[i];return '<div class="qb"><p class="qt">'+esc(PREGUNTAS[i][1])+'</p><p>Respuesta: <b>'+PREGUNTAS[i][3].map(function(o){return esc(PREGUNTAS[i][2][o])}).join(" + ")+'</b></p><p class="why">'+esc(PREGUNTAS[i][4])+'</p>'+(l?'<a href="#/lesson/'+l.id+'">Repasar '+l.num+' '+l.t+'</a>':"")+'</div>'}).join("")+'</div>':"")+
-     '<div class="cta"><a class="btn pri" href="#/mock-exam" id="otro">Nuevo simulacro</a><a class="btn" href="#/">Volver al inicio</a></div></div></section>';
-    $("#otro").addEventListener("click",function(e){e.preventDefault();simulacro()});
+  clearInterval(RELOJ);
+  var lista=armar();
+  if(!lista.length){app.innerHTML='<section class="pad"><p>El banco de preguntas no está disponible.</p></section>';return}
+  app.innerHTML='<section class="pad"><div class="prose"><span class="secn">simulacro</span><h1 class="les-t">Examen de práctica</h1><p class="lead">'+lista.length+' preguntas con formato de certificación y 120 minutos. Incluye preguntas de varios tipos y un caso de estudio. La corrección aparece al final.</p>'+
+   '<p class="note">Las preguntas son originales: reproducen el estilo de una certificación, no el contenido del examen real.</p><div class="cta"><button class="btn pri" id="go">Iniciar examen</button><a class="btn" href="#/">Volver</a></div></div></section>';
+  $("#go").addEventListener("click",function(){correr(lista)});
+}
+function correr(lista){
+  var pos=0,resp=lista.map(function(){return null}),marca={},fin=Date.now()+120*60000,api=null;
+  function reloj(){var r=Math.max(0,fin-Date.now()),m=Math.floor(r/60000),s=Math.floor(r/1000)%60,e=$("#clk");if(e)e.textContent=m+":"+String(s).padStart(2,"0");if(r<=0)terminar()}
+  function guarda(){if(api)resp[pos]=api.respuesta()}
+  function ir(n){guarda();pos=n;pinta();window.scrollTo(0,0)}
+  function pinta(){
+    var x=lista[pos];
+    app.innerHTML='<section class="pad"><div class="prose"><div class="exbar"><span class="secn">pregunta '+(pos+1)+' de '+lista.length+'</span><span class="secn">tiempo <b id="clk"></b></span></div><div class="pbar"><i style="width:'+(pos+1)/lista.length*100+'%"></i></div>'+
+     (x.caso?'<details class="casebox" open><summary>Caso de estudio: '+EX.esc(x.caso.t)+'</summary>'+x.caso.texto+'</details>':"")+
+     '<div id="qq"></div><label class="mk"><input type="checkbox" id="mk"'+(marca[pos]?" checked":"")+'> Marcar para revisar</label>'+
+     '<div class="cta"><button class="btn" id="pv"'+(pos?"":" disabled")+'>Anterior</button><button class="btn" id="nx"'+(pos+1<lista.length?"":" disabled")+'>Siguiente</button><button class="btn" id="rv">Revisión</button></div></div></section>';
+    api=EX.monta($("#qq"),x.q,{modo:"examen",rotulo:"examen",ans:resp[pos]||undefined,cambio:function(a){resp[pos]=a}});
+    $("#mk").addEventListener("change",function(){marca[pos]=this.checked});
+    $("#pv").addEventListener("click",function(){ir(pos-1)});$("#nx").addEventListener("click",function(){ir(pos+1)});
+    $("#rv").addEventListener("click",function(){guarda();revision()});
+    reloj();
   }
-  function pintar(){
-    var idx=lista[pos],q=PREGUNTAS[idx],multi=q[3].length>1,sel=[];
-    var orden=q[2].map(function(_,i){return i}).sort(function(){return Math.random()-.5});
-    function dib(){
-      app.innerHTML='<section class="pad"><div class="prose"><span class="secn">simulacro · pregunta '+(pos+1)+' de '+lista.length+'</span><div class="pbar"><i style="width:'+pos/lista.length*100+'%"></i></div>'+
-       '<div class="qb"><p class="qt">'+esc(q[1])+'</p><div class="opts">'+orden.map(function(o,i){return '<button class="opt" data-o="'+o+'" aria-pressed="'+(sel.indexOf(o)>=0)+'"><span>'+"ABCD".charAt(i)+'</span><span>'+esc(q[2][o])+'</span></button>'}).join("")+'</div>'+
-       '<div><button class="btn pri" id="sig"'+(sel.length===q[3].length?"":" disabled")+'>'+(pos+1===lista.length?"Ver resultado":"Siguiente")+'</button></div></div></div></section>';
-      app.querySelectorAll("[data-o]").forEach(function(b){b.addEventListener("click",function(){
-        var o=+b.getAttribute("data-o");
-        if(!multi)sel=[o];else{var i=sel.indexOf(o);if(i>=0)sel.splice(i,1);else if(sel.length<q[3].length)sel.push(o)}
-        dib();
-      })});
-      $("#sig").addEventListener("click",function(){
-        bien[idx]=sel.length===q[3].length&&q[3].every(function(v){return sel.indexOf(v)>=0});
-        est.resp[idx]=bien[idx];guardar();pos++;
-        if(pos<lista.length)pintar();else resultado();window.scrollTo(0,0);
-      });
-    }
-    dib();
+  function revision(){
+    app.innerHTML='<section class="pad"><div class="prose"><span class="secn">revisión</span><div class="exbar"><h1 class="les-t">Revisión</h1><span class="secn">tiempo <b id="clk"></b></span></div><p>Seleccione una pregunta para volver a ella.</p><div class="revg">'+lista.map(function(x,i){var c=resp[i]&&EX.completa(x.q,resp[i]);
+      return '<button class="btn'+(c?" hecho":"")+(marca[i]?" marc":"")+'" data-g="'+i+'">'+(i+1)+(marca[i]?" ⚑":"")+'</button>'}).join("")+'</div><div class="cta"><button class="btn pri" id="fn">Terminar y corregir</button></div></div></section>';
+    app.querySelector(".revg").addEventListener("click",function(e){var b=e.target.closest("[data-g]");if(b){api=null;pos=+b.getAttribute("data-g");pinta();window.scrollTo(0,0)}});
+    $("#fn").addEventListener("click",terminar);api=null;reloj();
   }
-  pintar();
+  function terminar(){
+    clearInterval(RELOJ);guarda();
+    var ok=function(i){return !!resp[i]&&EX.correcta(lista[i].q,resp[i])};
+    var tot=lista.filter(function(_,i){return ok(i)}).length,pc=Math.round(tot/lista.length*100);
+    var filas=DOMINIOS.map(function(d){var t=[];lista.forEach(function(x,i){if(x.q.d===d.n)t.push(i)});var o=t.filter(ok).length;return [d.t,o+"/"+t.length,t.length?Math.round(o/t.length*100)+" %":"—"]});
+    var mal=[];lista.forEach(function(x,i){if(!ok(i))mal.push(x)});
+    app.innerHTML='<section class="pad"><div class="prose"><span class="secn">resultado</span><p class="score">'+pc+' %</p><p>'+tot+' de '+lista.length+' correctas. La meta recomendada es 80 %. Este valor no predice el puntaje oficial.</p>'+tabla(["Dominio","Aciertos","%"],filas)+
+     (mal.length?'<h2>Para reforzar</h2><div class="stack">'+mal.map(function(x){var l=x.lec&&LEC.filter(function(y){return y.id===x.lec})[0];
+       return '<div class="qb">'+(x.q.esc?'<p class="esc">'+EX.esc(x.q.esc)+'</p>':"")+'<p class="qt">'+EX.esc(x.q.q)+'</p><p>Respuesta:<br>'+EX.respuestaTexto(x.q)+'</p><p class="why">'+EX.esc(x.q.exp)+'</p>'+(x.q.fuente?'<a href="'+EX.esc(x.q.fuente)+'" target="_blank" rel="noopener">Fuente oficial</a>':"")+(l?' · <a href="#/lesson/'+l.id+'">Repasar '+l.num+'</a>':"")+'</div>'}).join("")+'</div>':"")+
+     '<div class="cta"><button class="btn pri" id="otro">Nuevo examen</button><a class="btn" href="#/">Volver al inicio</a></div></div></section>';
+    $("#otro").addEventListener("click",simulacro);window.scrollTo(0,0);
+  }
+  RELOJ=setInterval(reloj,1000);
+  pinta();
 }
 
 /* Tarjetas */
@@ -170,6 +190,7 @@ function examen(){
 
 /* Rutas */
 function rutas(){
+  clearInterval(RELOJ);
   var h=location.hash||"#/",m;
   var nav=document.querySelectorAll(".nav a");
   nav.forEach(function(a){a.classList.toggle("on",a.getAttribute("href")===h)});

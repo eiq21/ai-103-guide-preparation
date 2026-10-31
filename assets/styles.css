@@ -188,3 +188,25 @@ footer{border-top:1px solid var(--line);padding:18px 20px;font-size:14px;color:v
   .stairs{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}
   .stairs>div{min-height:0}
 }
+
+/* Formato de examen */
+.esc{background:var(--bg);border:1px solid var(--soft);padding:10px 12px;font-size:16px}
+.note{font-size:15px;color:var(--muted)}
+.yn{border:1px solid var(--soft);padding:2px 10px}
+.yn[aria-pressed="true"]{background:var(--tint);border-color:var(--ink)}
+.yn.ok{background:var(--goodbg);border-color:var(--good)}
+.yn.no{background:var(--badbg);border-color:var(--bad)}
+.yn:disabled{cursor:default;color:var(--ink)}
+.ordcols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px}
+.ordcols>div{display:grid;gap:6px;align-content:start;min-width:0}
+pre.cod{background:var(--bg);color:var(--ink);border:1px solid var(--line)}
+.hueco{font-family:var(--mono);font-size:13px;max-width:100%;border:1px solid var(--line);background:var(--hl);padding:2px 4px}
+.hueco.ok{background:var(--goodbg)}.hueco.no{background:var(--badbg)}
+.exbar{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.casebox{border:1px solid var(--line);padding:10px 14px;background:var(--tint)}
+.casebox summary{font-weight:600;cursor:pointer}
+.mk{display:flex;gap:8px;align-items:center}
+.revg{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:6px}
+.revg .btn{padding:6px;text-align:center;font-weight:500}
+.revg .hecho{background:var(--tint)}
+.revg .marc{border-width:2px}
