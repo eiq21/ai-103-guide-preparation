@@ -1,0 +1,1067 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Plan de 5 días para el examen AI-103, con temas en gráficos, tarjetas Leitner y simulacro por escenarios.">
+<title>AI-103 en 5 días</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+/* Layout: consola de estudio con barra fija; cada pestaña es una herramienta. Marca del tema: escala 0-1000 con corte en 700. */
+:root{
+  --bg:#EEF3F6;--surface:#FFFFFF;--sunk:#E3EAEF;--ink:#13242F;--muted:#536673;--line:#CFD9E0;
+  --accent:#0A6687;--accent-ink:#FFFFFF;--warn:#A85F00;--good:#12784F;--bad:#B3322B;
+  --d1:#2C5CAE;--d2:#7A3CA3;--d3:#B04A32;--d4:#14805B;--d5:#96690A;
+  --display:"Bricolage Grotesque","Trebuchet MS",sans-serif;
+  --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1A21;--surface:#15252F;--sunk:#0A141A;--ink:#E5EEF3;--muted:#9FB3BF;--line:#2B404D;
+  --accent:#62C4E8;--accent-ink:#06222E;--warn:#EFAE4E;--good:#58CFA0;--bad:#F2877F;
+  --d1:#86ADF2;--d2:#CB9BEB;--d3:#F09A82;--d4:#62D0A6;--d5:#E3BC5C;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1A21;--surface:#15252F;--sunk:#0A141A;--ink:#E5EEF3;--muted:#9FB3BF;--line:#2B404D;
+  --accent:#62C4E8;--accent-ink:#06222E;--warn:#EFAE4E;--good:#58CFA0;--bad:#F2877F;
+  --d1:#86ADF2;--d2:#CB9BEB;--d3:#F09A82;--d4:#62D0A6;--d5:#E3BC5C;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+section.view,.block,.dom,.head,.days,.lane,.qbox,.opts,.nest{grid-template-columns:minmax(0,1fr)}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3,h4{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,6vw,3.6rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.5rem,3.4vw,2.05rem);font-weight:700}
+h3{font-size:1.2rem;font-weight:700}
+h4{font-size:1rem;font-weight:700}
+p{margin:0}
+a{color:var(--accent);text-underline-offset:2px}
+code{font-family:var(--mono);font-size:.84em;background:var(--sunk);padding:.08em .32em;border-radius:4px;overflow-wrap:anywhere}
+pre{font-family:var(--mono);font-size:.82rem;line-height:1.5;background:var(--sunk);padding:14px;border-radius:8px;overflow-x:auto;margin:0}
+pre code{background:none;padding:0;font-size:inherit;overflow-wrap:normal}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.lede{color:var(--muted);max-width:66ch}
+.eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+/* Cabecera y navegación */
+.top{padding-block:30px 22px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:22px;align-items:end}
+.top .sub{margin-top:8px}
+.count{font-family:var(--mono);text-align:right}
+.count b{display:block;font-family:var(--display);font-size:3rem;line-height:1;font-weight:800;color:var(--accent)}
+.count span{font-size:.78rem;color:var(--muted)}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--surface);border-block:1px solid var(--line)}
+.tabrow{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tabrow button{border:0;background:none;padding:12px 14px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap}
+.tabrow button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+main{padding-block:28px 56px}
+section.view{display:grid;gap:28px}
+.block{display:grid;gap:14px}
+.head{display:grid;gap:6px}
+
+/* Mapa de pesos */
+.weights{display:grid;gap:10px}
+.wrow{display:grid;grid-template-columns:minmax(0,15rem) minmax(0,1fr) 5.2rem;gap:12px;align-items:center}
+.wname{font-weight:600;line-height:1.25}
+.wtrack{position:relative;height:22px;background:var(--sunk);border-radius:4px;overflow:hidden}
+.wtrack i{position:absolute;inset:0 auto 0 0;display:block}
+.wtrack .max{opacity:.38}
+.wpct{font-family:var(--mono);font-size:.84rem;font-variant-numeric:tabular-nums;text-align:right}
+.waxis{display:grid;grid-template-columns:minmax(0,15rem) minmax(0,1fr) 5.2rem;gap:12px}
+.waxis div{grid-column:2;display:flex;justify-content:space-between;font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.c1{background:var(--d1)}.c2{background:var(--d2)}.c3{background:var(--d3)}.c4{background:var(--d4)}.c5{background:var(--d5)}
+
+/* Método */
+.method{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.method>div{padding:14px;border-right:1px solid var(--line);display:grid;gap:4px;align-content:start}
+.method>div:last-child{border-right:0}
+.method b{font-family:var(--display);font-size:1.05rem}
+.method .t{font-family:var(--mono);font-size:.76rem;color:var(--accent)}
+.method p{font-size:.93rem;color:var(--muted)}
+
+/* Plan */
+.days{display:grid;gap:12px}
+.day{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;grid-template-columns:7.2rem minmax(0,1fr);gap:16px}
+.day.today{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.dlabel{display:grid;gap:2px;align-content:start}
+.dlabel b{font-family:var(--display);font-size:1.5rem;line-height:1}
+.dlabel span{font-family:var(--mono);font-size:.76rem;color:var(--muted)}
+.dlabel .dtag{justify-self:start;margin-top:6px;font-family:var(--mono);font-size:.68rem;padding:2px 6px;border-radius:4px;background:var(--accent);color:var(--accent-ink)}
+.day h3{margin-bottom:8px}
+.tasks{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.tasks label{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:8px;align-items:start;cursor:pointer}
+.tasks input{width:18px;height:18px;margin:3px 0 0;accent-color:var(--accent)}
+.tasks em{font-style:normal;font-family:var(--mono);font-size:.76rem;color:var(--muted);white-space:nowrap;padding-top:3px}
+.tasks input:checked ~ span{color:var(--muted);text-decoration:line-through}
+.progress{height:10px;background:var(--sunk);border-radius:5px;overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+
+/* Temas */
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface);padding:6px 11px;border-radius:999px;font-size:.92rem;font-weight:600}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.dom{display:grid;gap:22px;padding-block:6px}
+.domhead{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center}
+.dnum{font-family:var(--display);font-weight:800;font-size:1.25rem;width:3rem;height:3rem;display:grid;place-items:center;border-radius:8px;color:var(--surface)}
+.dpct{font-family:var(--mono);font-size:.8rem;color:var(--muted)}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.94rem}
+th,td{text-align:left;padding:8px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font-family:var(--mono);font-size:.74rem;letter-spacing:.03em;color:var(--muted);font-weight:600;white-space:nowrap}
+td code{white-space:nowrap}
+.traps{background:color-mix(in srgb,var(--warn) 11%,var(--surface));border:1px solid color-mix(in srgb,var(--warn) 40%,var(--line));border-radius:8px;padding:13px 15px}
+.traps h4{color:var(--warn);margin-bottom:6px}
+.traps ul,.plain{margin:0;padding-left:1.15em;display:grid;gap:5px}
+
+/* Gráficos en CSS */
+.nest{border:2px solid var(--line);border-radius:10px;padding:10px 12px 12px;display:grid;gap:9px;background:var(--surface)}
+.nest>.lab{font-family:var(--mono);font-size:.76rem;color:var(--muted)}
+.nest .nest{background:color-mix(in srgb,var(--d1) 7%,var(--surface));border-color:color-mix(in srgb,var(--d1) 45%,var(--line))}
+.nest .nest .nest{background:var(--surface)}
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:9px}
+.tile{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:9px 11px;font-size:.92rem;min-width:0}
+.tile b{display:block;font-family:var(--display)}
+.flow{display:flex;flex-wrap:wrap;gap:6px 4px;align-items:stretch}
+.step{flex:1 1 112px;min-width:0;border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:8px 10px;font-size:.88rem;line-height:1.3}
+.step b{display:block;font-family:var(--display);font-size:.96rem}
+.step.hot{background:color-mix(in srgb,var(--accent) 13%,var(--surface));border-color:var(--accent)}
+.step.gate{background:color-mix(in srgb,var(--bad) 11%,var(--surface));border-color:var(--bad)}
+.arw{align-self:center;color:var(--muted);font-family:var(--mono)}
+.lane{display:grid;gap:6px}
+.lane>.eyebrow{margin:0}
+.matrix{display:grid;grid-template-columns:minmax(5.5rem,.8fr) repeat(3,minmax(8rem,1fr));gap:4px;min-width:560px}
+.matrix>div{padding:9px 10px;border-radius:6px;background:var(--surface);font-size:.86rem;line-height:1.3}
+.matrix .mh{background:none;font-family:var(--mono);font-size:.74rem;color:var(--muted)}
+.matrix .ms{background:color-mix(in srgb,var(--accent) 15%,var(--surface))}
+.matrix .mp{background:color-mix(in srgb,var(--d2) 16%,var(--surface))}
+.matrix .mb{background:color-mix(in srgb,var(--d4) 16%,var(--surface))}
+.matrix .mx{background:var(--sunk);color:var(--muted)}
+.matrix code{background:none;padding:0;font-size:.76rem;display:block;overflow-wrap:anywhere}
+.stairs{display:grid;grid-template-columns:repeat(5,minmax(7.2rem,1fr));gap:6px;align-items:end;min-width:610px}
+.stairs>div{border-radius:8px 8px 0 0;background:color-mix(in srgb,var(--d5) 17%,var(--surface));border-top:3px solid var(--d5);padding:9px 10px;font-size:.84rem;line-height:1.3}
+.stairs b{display:block;font-family:var(--display);font-size:.96rem}
+.sev{display:grid;grid-template-columns:5.3rem repeat(3,minmax(4.6rem,1fr));gap:4px;font-size:.88rem}
+.sev>div{padding:7px 9px;border-radius:5px;background:var(--sunk);text-align:center}
+.sev .n{background:none;text-align:left;font-weight:700;padding-left:0}
+.sev .h{background:none;font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.sev .x{background:var(--bad);color:var(--surface);font-weight:700}
+.patterns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,176px),1fr));gap:9px}
+.pat{border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:9px 10px;display:grid;gap:3px;align-content:start;font-size:.9rem;min-width:0}
+.pat svg{width:100%;max-width:150px;height:54px}
+.pat svg circle{fill:var(--d2)}
+.pat svg path,.pat svg line{stroke:var(--muted);stroke-width:1.5;fill:none}
+.pat b{font-family:var(--display)}
+.pick{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:9px}
+.pick .tile b{margin-bottom:2px}
+.pick .q{color:var(--muted);font-size:.88rem;margin-bottom:5px}
+
+/* Tarjetas */
+.leitner{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 11px}
+.box b{display:block;font-family:var(--display);font-size:1.5rem;line-height:1.1}
+.box span{font-size:.82rem;color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px;min-height:210px;display:grid;gap:12px;align-content:start;width:100%;text-align:left}
+.card .front{font-family:var(--display);font-weight:700;font-size:1.3rem;line-height:1.25}
+.card .back{border-top:1px dashed var(--line);padding-top:12px}
+.tag{font-family:var(--mono);font-size:.72rem;font-weight:600}
+.rate{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.btn{border:1px solid var(--line);background:var(--surface);padding:10px 12px;border-radius:8px;font-weight:600}
+.btn.pri{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn:disabled{opacity:.5;cursor:default}
+.note{font-size:.9rem;color:var(--muted)}
+
+/* Simulacro */
+.qbox{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;display:grid;gap:13px}
+.qtext{font-size:1.1rem;font-weight:600;line-height:1.4}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:10px 12px;display:grid;grid-template-columns:1.5rem minmax(0,1fr);gap:6px}
+.opt .k{font-family:var(--mono);color:var(--muted)}
+.opt[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.opt.ok{border-color:var(--good);background:color-mix(in srgb,var(--good) 13%,var(--surface))}
+.opt.no{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,var(--surface))}
+.why{border-left:3px solid var(--accent);padding-left:12px}
+.scale{position:relative;height:24px;background:var(--sunk);border-radius:5px;overflow:hidden}
+.scale i{position:absolute;inset:0 auto 0 0;background:var(--accent);width:0}
+.scale u{position:absolute;top:0;bottom:0;left:70%;width:2px;background:var(--bad)}
+.scalel{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.bydom{display:grid;gap:7px}
+.bydom>div{display:grid;grid-template-columns:minmax(0,10.5rem) minmax(0,1fr) auto;gap:10px;align-items:center;font-size:.92rem}
+.bydom .wtrack{height:13px}
+.bydom span:last-child{font-family:var(--mono);font-size:.8rem;text-align:right;white-space:nowrap}
+
+/* Repaso */
+.sheet{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:12px}
+.sheet .tile{padding:13px 15px;display:grid;gap:5px;align-content:start}
+.sheet .tile ul{margin:0;padding-left:1.1em;display:grid;gap:3px}
+.srcs{columns:2;column-gap:28px;font-size:.93rem;padding-left:1.1em;margin:0}
+.srcs li{break-inside:avoid;margin-bottom:4px}
+.warnbox{background:color-mix(in srgb,var(--accent) 10%,var(--surface));border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line));border-radius:8px;padding:13px 15px}
+
+@media (max-width:720px){
+  body{font-size:16px}
+  .top{grid-template-columns:minmax(0,1fr)}
+  .count{text-align:left}
+  .wrow,.waxis{grid-template-columns:minmax(0,1fr) 4.8rem}
+  .wname{grid-column:1/-1}
+  .waxis div{grid-column:1}
+  .method{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .method>div{border-bottom:1px solid var(--line)}
+  .day{grid-template-columns:minmax(0,1fr);gap:9px}
+  .dlabel{grid-template-columns:auto auto 1fr;gap:9px;align-items:baseline}
+  .dtag{margin:0}
+  .leitner{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .bydom>div{grid-template-columns:minmax(0,1fr) auto}
+  .bydom .wtrack{grid-column:1/-1;grid-row:2}
+  .srcs{columns:1}
+  .arw{display:none}
+  .step{flex-basis:40%}
+}
+@media (prefers-reduced-motion:reduce){.progress i{transition:none}}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="eyebrow">Examen AI-103 · Developing AI Apps and Agents on Azure</p>
+      <h1>AI-103 en 5 días</h1>
+      <p class="lede sub">Estudia primero lo que más pesa, entiende cada tema con un gráfico y luego ponte a prueba. El plan va del sábado 31 de octubre al jueves 5 de noviembre de 2026.</p>
+    </div>
+    <div class="count"><b id="daysleft">5</b><span id="dayslabel">días para el examen</span></div>
+  </header>
+</div>
+<nav class="tabs" aria-label="Secciones">
+  <div class="wrap"><div class="tabrow" role="tablist">
+    <button role="tab" data-v="plan">Plan</button>
+    <button role="tab" data-v="temas">Temas con gráficos</button>
+    <button role="tab" data-v="tarjetas">Tarjetas</button>
+    <button role="tab" data-v="simulacro">Simulacro</button>
+    <button role="tab" data-v="repaso">Repaso final</button>
+  </div></div>
+</nav>
+
+<main class="wrap">
+
+<!-- PLAN -->
+<section class="view" id="v-plan">
+  <div class="block">
+    <div class="head"><h2>Dónde están los puntos</h2>
+    <p class="lede">Dos áreas suman entre 55 y 65 % del examen. Por eso les dedicamos el fin de semana completo.</p></div>
+    <div class="weights" id="weights"></div>
+    <div class="waxis"><div><span>0 %</span><span>10 %</span><span>20 %</span><span>30 %</span><span>40 %</span></div></div>
+    <p class="note">La parte sólida es el mínimo oficial y la parte clara llega al máximo. Temario vigente desde el 16 de abril de 2026.</p>
+  </div>
+
+  <div class="block">
+    <div class="head"><h2>El método: 4 pasos por bloque</h2>
+    <p class="lede">Combina Pareto, práctica de recuperación y repetición espaciada con cajas Leitner. Leer y releer rinde poco a 5 días del examen; recordar sin mirar rinde mucho más. Repite este ciclo de 90 minutos en cada tema.</p></div>
+    <div class="method">
+      <div><span class="t">15 min</span><b>Ver</b><p>Abre el gráfico del tema y explícalo en voz alta sin leer.</p></div>
+      <div><span class="t">30 min</span><b>Hacer</b><p>Haz el laboratorio o sigue el quickstart oficial enlazado.</p></div>
+      <div><span class="t">30 min</span><b>Recuperar</b><p>Responde el simulacro del dominio sin ayuda y sin apuntes.</p></div>
+      <div><span class="t">15 min</span><b>Corregir</b><p>Anota por qué fallaste y pasa esas tarjetas a la caja 1.</p></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="head"><h2>Calendario</h2>
+    <p class="lede">Supone 4 horas el sábado y el domingo, y 2 h 30 de lunes a miércoles: 15 h 30 en total. Si tienes menos tiempo, recorta primero el laboratorio del martes, nunca el simulacro.</p></div>
+    <div class="progress" aria-hidden="true"><i id="planbar"></i></div>
+    <p class="note" id="plantext">0 tareas completadas</p>
+    <div class="days" id="days"></div>
+  </div>
+
+  <div class="block">
+    <div class="head"><h2>Tres laboratorios que valen la pena</h2>
+    <p class="lede">El examen puede incluir laboratorios: Microsoft da 120 minutos, la duración de los exámenes que pueden traerlos. Si tienes una suscripción de Azure, haz estos tres. Si no, lee el código del quickstart y escribe de memoria qué hace cada línea.</p></div>
+    <div class="split">
+      <div class="tile"><b>Sábado: primera llamada keyless</b>Crea un proyecto, despliega un modelo y llámalo con <code>DefaultAzureCredential</code>. <a href="https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry" target="_blank" rel="noopener">Abrir guía</a></div>
+      <div class="tile"><b>Domingo: agente con herramienta</b>Crea un prompt agent, usa <code>conversations</code> y conecta un MCP con aprobación. <a href="https://learn.microsoft.com/en-us/azure/foundry/agents/quickstarts/prompt-agent" target="_blank" rel="noopener">Abrir quickstart</a></div>
+      <div class="tile"><b>Lunes: analyzer y búsqueda</b>Analiza un PDF con <code>prebuilt-documentSearch</code> y prueba una consulta híbrida. <a href="https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/overview" target="_blank" rel="noopener">Abrir guía</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- TEMAS -->
+<section class="view" id="v-temas" hidden>
+  <div class="block">
+    <div class="head"><h2>Temas con gráficos</h2>
+    <p class="lede">Cada dominio responde lo que el examen suele pedir: elegir el servicio correcto para un escenario. Los nombres van en inglés para que los reconozcas en el examen.</p></div>
+    <div class="chips" id="domchips"></div>
+  </div>
+
+  <article class="dom" data-d="1">
+    <div class="domhead"><span class="dnum c1">D1</span><div><h2>Planificar y administrar</h2><span class="dpct">25-30 % · sábado y lunes</span></div></div>
+
+    <div class="block"><h3>El nuevo modelo de recursos</h3>
+      <div class="nest"><span class="lab">Suscripción y grupo de recursos</span>
+        <div class="nest"><span class="lab">Foundry resource: frontera de seguridad, red, facturación. Aquí viven los despliegues de modelos</span>
+          <div class="split">
+            <div class="nest"><span class="lab">Project A: agentes, conversaciones, evaluaciones, conexiones</span></div>
+            <div class="nest"><span class="lab">Project B: equipo o caso de uso aislado</span></div>
+          </div>
+        </div>
+      </div>
+      <p>Endpoint del proyecto: <code>https://&lt;resource&gt;.services.ai.azure.com/api/projects/&lt;project&gt;</code></p>
+      <div class="tw"><table>
+        <tr><th>Antes</th><th>Ahora</th></tr>
+        <tr><td>Azure AI Studio / Azure AI Foundry</td><td>Microsoft Foundry</td></tr>
+        <tr><td>Azure AI Services</td><td>Foundry Tools</td></tr>
+        <tr><td>Hub + Azure OpenAI + AI Services</td><td>Foundry resource con projects</td></tr>
+        <tr><td>Assistants API: threads, messages, runs</td><td>Responses API: conversations, items, responses, agent versions</td></tr>
+        <tr><td><code>azure-ai-inference</code>, <code>AzureOpenAI()</code></td><td><code>azure-ai-projects</code> 2.x y <code>OpenAI()</code> sobre <code>/openai/v1/</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="block"><h3>Matriz de despliegues</h3>
+      <p>Decide con dos preguntas: dónde se pueden procesar los datos (fila) y cómo es la carga (columna).</p>
+      <div class="tw" style="padding:8px"><div class="matrix">
+        <div class="mh"></div><div class="mh">Tráfico variable · pago por token</div><div class="mh">Alto y constante · PTU reservadas</div><div class="mh">Asíncrono · 50 % menos · objetivo 24 h</div>
+        <div class="mh">Cualquier región</div><div class="ms"><b>Global Standard</b><code>GlobalStandard</code></div><div class="mp"><b>Global Provisioned</b><code>GlobalProvisionedManaged</code></div><div class="mb"><b>Global Batch</b><code>GlobalBatch</code></div>
+        <div class="mh">Data zone: US, EU, APAC</div><div class="ms"><b>Data Zone Standard</b><code>DataZoneStandard</code></div><div class="mp"><b>Data Zone Provisioned</b><code>DataZoneProvisionedManaged</code></div><div class="mb"><b>Data Zone Batch</b><code>DataZoneBatch</code></div>
+        <div class="mh">Geografía de Azure</div><div class="ms"><b>Standard</b><code>Standard</code></div><div class="mp"><b>Regional Provisioned</b><code>ProvisionedManaged</code></div><div class="mx">No existe batch regional</div>
+      </div></div>
+      <p class="note">Empieza siempre por Global Standard salvo requisito. <code>DeveloperTier</code> solo evalúa modelos fine-tuned: dura 24 horas y no tiene SLA. Modelos open source en managed compute no usan estos tipos.</p>
+    </div>
+
+    <div class="block"><h3>Roles con mínimo privilegio</h3>
+      <div class="tw"><table>
+        <tr><th>Necesidad</th><th>Rol (nombre anterior)</th><th>Alcance</th></tr>
+        <tr><td>Solo invocar agentes</td><td><b>Foundry Agent Consumer</b></td><td>Proyecto o un agente</td></tr>
+        <tr><td>Construir y probar en un proyecto</td><td><b>Foundry User</b> (Azure AI User)</td><td>Proyecto o recurso</td></tr>
+        <tr><td>Administrar proyectos y publicar agentes</td><td><b>Foundry Project Manager</b> (Azure AI Project Manager)</td><td>Recurso</td></tr>
+        <tr><td>Administrar recursos y modelos, sin construir</td><td><b>Foundry Account Owner</b> (Azure AI Account Owner)</td><td>Recurso</td></tr>
+        <tr><td>Todo, incluido construir</td><td><b>Foundry Owner</b> (Azure AI Owner)</td><td>Recurso</td></tr>
+        <tr><td>Ver cuota</td><td><b>Cognitive Services Usages Reader</b></td><td>Solo suscripción</td></tr>
+      </table></div>
+      <div class="split">
+        <div class="tile"><b>Seguridad</b>Usa managed identity y Entra ID. Con una API key no se aplica RBAC: la clave da acceso total.</div>
+        <div class="tile"><b>Red</b>Private endpoints y acceso público deshabilitado. Los prompt agents admiten red privada; los memory stores no admiten VNet.</div>
+        <div class="tile"><b>Agentes: basic o standard</b>Basic usa recursos de Microsoft. Standard guarda todo en tu Cosmos DB, Storage y AI Search. Para cambiarlos debes recrear el proyecto.</div>
+      </div>
+    </div>
+
+    <div class="block"><h3>Cuotas y errores 429</h3>
+      <div class="flow">
+        <div class="step"><b>Cuota</b>TPM por suscripción, región, modelo y tipo</div><span class="arw">→</span>
+        <div class="step"><b>Despliegue</b>Asignas TPM; RPM es proporcional</div><span class="arw">→</span>
+        <div class="step gate"><b>429</b>TPM agotado o ráfaga en ventana de 1-10 s</div><span class="arw">→</span>
+        <div class="step hot"><b>Respuesta</b><code>retry-after-ms</code>, backoff y jitter</div><span class="arw">→</span>
+        <div class="step"><b>Persiste</b>Rebalancea TPM o pasa a PTU</div>
+      </div>
+    </div>
+
+    <div class="block"><h3>IA responsable: los 4 puntos de intervención</h3>
+      <div class="flow">
+        <div class="step gate"><b>1 · User input</b>Modelos y agentes</div><span class="arw">→</span>
+        <div class="step"><b>Modelo</b>Razona</div><span class="arw">→</span>
+        <div class="step gate"><b>2 · Tool call</b>Solo agentes</div><span class="arw">→</span>
+        <div class="step"><b>Tool</b>API, MCP, búsqueda</div><span class="arw">→</span>
+        <div class="step gate"><b>3 · Tool response</b>Solo agentes</div><span class="arw">→</span>
+        <div class="step gate"><b>4 · Output</b>Modelos y agentes</div>
+      </div>
+      <h4>Nivel de bloqueo: el nombre confunde</h4>
+      <div class="tw" style="padding:8px"><div class="sev" style="min-width:330px">
+        <div class="n h">Nivel</div><div class="h">Severidad baja</div><div class="h">Media</div><div class="h">Alta</div>
+        <div class="n">Low</div><div>pasa</div><div>pasa</div><div class="x">bloquea</div>
+        <div class="n">Medium</div><div>pasa</div><div class="x">bloquea</div><div class="x">bloquea</div>
+        <div class="n">High</div><div class="x">bloquea</div><div class="x">bloquea</div><div class="x">bloquea</div>
+      </div></div>
+    </div>
+
+    <div class="traps"><h4>Trampas del dominio</h4><ul>
+      <li>El guardrail de un agente reemplaza por completo al de su modelo. Si no asignas uno, hereda el del despliegue.</li>
+      <li>Los agentes solo admiten <b>Annotate and block</b>. Solo los modelos pueden usar <b>Annotate</b> sin bloquear.</li>
+      <li>Spotlighting y Groundedness se aplican a modelos, no a agentes.</li>
+      <li>No uses roles <b>Cognitive Services …</b> ni <b>Azure AI Developer</b> para proyectos de Foundry. La excepción es Usages Reader.</li>
+      <li>Un 429 no siempre es falta de cuota. Si la métrica está baja, sospecha de ráfagas o de un ajuste temporal.</li>
+    </ul></div>
+  </article>
+
+  <article class="dom" data-d="2" hidden>
+    <div class="domhead"><span class="dnum c2">D2</span><div><h2>IA generativa y agentes</h2><span class="dpct">30-35 % · domingo</span></div></div>
+
+    <div class="block"><h3>Elige el tipo de agente</h3>
+      <div class="pick">
+        <div class="tile"><b>Prompt agent</b><div class="q">Quiero lo más rápido, sin código de runtime.</div>Instrucciones, modelo y tools. Foundry lo ejecuta.</div>
+        <div class="tile"><b>Voice-based prompt agent</b><div class="q">Necesito voz en tiempo real sin hospedar la orquestación.</div>Foundry gestiona el ciclo y usa Voice Live por WebSocket.</div>
+        <div class="tile"><b>Hosted agent</b><div class="q">Ya tengo código en LangGraph o Agent Framework.</div>Tu contenedor, con endpoint, escala e identidad gestionados.</div>
+        <div class="tile"><b>Responses API directa</b><div class="q">Quiero que la definición viva en mi código.</div>Agente efímero: no creas ningún recurso de agente.</div>
+      </div>
+    </div>
+
+    <div class="block"><h3>El código mínimo que debes reconocer</h3>
+<pre><code>project = AIProjectClient(endpoint=ENDPOINT, credential=DefaultAzureCredential())
+
+project.agents.create_version(
+    agent_name="soporte",
+    definition=PromptAgentDefinition(model="gpt-5-mini", instructions="..."),
+)
+
+openai = project.get_openai_client(agent_name="soporte")
+conv = openai.conversations.create()                     # historial entre turnos
+r = openai.responses.create(conversation=conv.id, input="Hola")
+print(r.output_text)</code></pre>
+      <p class="note">Si ves <code>threads</code>, <code>runs</code> o <code>azure-ai-projects</code> 1.x, es la API clásica. El parámetro <code>model</code> recibe el <b>nombre del despliegue</b>.</p>
+    </div>
+
+    <div class="block"><h3>Tools y aprobación humana</h3>
+      <div class="tw"><table>
+        <tr><th>Tool</th><th>Úsala cuando</th><th>Quién ejecuta</th></tr>
+        <tr><td>Function calling</td><td>Llamas a tu propia lógica</td><td><b>Tu app</b>: el modelo solo pide la llamada</td></tr>
+        <tr><td>Code interpreter</td><td>Cálculos, gráficos, análisis de archivos</td><td>Sandbox de Foundry</td></tr>
+        <tr><td>File search</td><td>Documentos que aporta el usuario en la sesión</td><td>Foundry</td></tr>
+        <tr><td>Web search</td><td>Información pública actual</td><td>Foundry</td></tr>
+        <tr><td>OpenAPI</td><td>API externa descrita con un spec</td><td>Foundry llama a tu API</td></tr>
+        <tr><td>MCP</td><td>Servidor remoto con varias herramientas</td><td>Servidor MCP</td></tr>
+        <tr><td>Toolbox</td><td>Compartir el mismo set entre agentes</td><td>Endpoint MCP gestionado</td></tr>
+      </table></div>
+      <div class="flow">
+        <div class="step"><b>Modelo</b>Quiere usar la tool</div><span class="arw">→</span>
+        <div class="step hot"><b><code>mcp_approval_request</code></b>Si <code>require_approval="always"</code></div><span class="arw">→</span>
+        <div class="step gate"><b>Humano</b>Revisa nombre y argumentos</div><span class="arw">→</span>
+        <div class="step hot"><b><code>mcp_approval_response</code></b><code>approve=True</code> o <code>False</code></div><span class="arw">→</span>
+        <div class="step"><b>Continúa</b>Con <code>previous_response_id</code></div>
+      </div>
+    </div>
+
+    <div class="block"><h3>¿Dónde va cada tipo de conocimiento?</h3>
+      <div class="pick">
+        <div class="tile"><b>Conversation</b><div class="q">Contexto de esta sesión</div>Memoria de corto plazo.</div>
+        <div class="tile"><b>Memory (preview)</b><div class="q">Preferencias que persisten entre sesiones</div>Tipos: user profile, chat summary y procedural.</div>
+        <div class="tile"><b>Foundry IQ</b><div class="q">Conocimiento curado de la organización</div>Knowledge base reutilizable y con permisos.</div>
+        <div class="tile"><b>File search</b><div class="q">Archivos subidos durante la interacción</div>Búsqueda en documentos del usuario.</div>
+      </div>
+    </div>
+
+    <div class="block"><h3>Patrones multiagente</h3>
+      <div class="patterns">
+        <div class="pat"><svg viewBox="0 0 150 54" aria-hidden="true"><path d="M20 27H130"/><circle cx="20" cy="27" r="9"/><circle cx="75" cy="27" r="9"/><circle cx="130" cy="27" r="9"/></svg><b>Sequential</b>Orden fijo: investigar, redactar, revisar.</div>
+        <div class="pat"><svg viewBox="0 0 150 54" aria-hidden="true"><path d="M20 27L120 9M20 27L120 27M20 27L120 45"/><circle cx="20" cy="27" r="9"/><circle cx="120" cy="9" r="7"/><circle cx="120" cy="27" r="7"/><circle cx="120" cy="45" r="7"/></svg><b>Concurrent</b>Varios a la vez y se agregan los resultados.</div>
+        <div class="pat"><svg viewBox="0 0 150 54" aria-hidden="true"><path d="M20 15C60 2 90 2 130 15M130 39C90 52 60 52 20 39"/><circle cx="20" cy="27" r="9"/><circle cx="130" cy="27" r="9"/></svg><b>Handoff</b>Uno transfiere el control al especialista.</div>
+        <div class="pat"><svg viewBox="0 0 150 54" aria-hidden="true"><path d="M75 27L30 11M75 27L120 11M75 27L30 43M75 27L120 43"/><circle cx="75" cy="27" r="10"/><circle cx="30" cy="11" r="7"/><circle cx="120" cy="11" r="7"/><circle cx="30" cy="43" r="7"/><circle cx="120" cy="43" r="7"/></svg><b>Group chat</b>Un gestor decide quién interviene.</div>
+        <div class="pat"><svg viewBox="0 0 150 54" aria-hidden="true"><path d="M30 27H118"/><path d="M118 27C118 4 58 4 58 22"/><circle cx="30" cy="27" r="9"/><circle cx="75" cy="27" r="7"/><circle cx="120" cy="27" r="7"/></svg><b>Magentic</b>Un planificador adapta el plan según avanza.</div>
+      </div>
+      <p>Para humano en el ciclo o aprobación usa puntos de espera en el flujo. Para conectar dos agentes sin flujo formal usa <b>A2A</b>.</p>
+      <div class="warnbox"><b>Cambio reciente:</b> los workflows visuales de Foundry se retiran el 1 de diciembre de 2026. Lo nuevo se construye con <b>Microsoft Agent Framework</b>, sucesor de Semantic Kernel y AutoGen, y se despliega como hosted agent. Estudia los patrones: el examen los mide sin importar la herramienta.</div>
+    </div>
+
+    <div class="block"><h3>¿Qué evaluador mide qué?</h3>
+      <div class="tw"><table>
+        <tr><th>Síntoma</th><th>Evaluador</th></tr>
+        <tr><td>Inventa datos que no están en el contexto</td><td><b>Groundedness</b> (1-5 con LLM) · Groundedness Pro no requiere despliegue</td></tr>
+        <tr><td>Responde otra cosa</td><td><b>Relevance</b></td></tr>
+        <tr><td>Trae mal los documentos</td><td><b>Retrieval</b> · Document Retrieval con ground truth</td></tr>
+        <tr><td>Omite información crítica</td><td><b>Response Completeness</b></td></tr>
+        <tr><td>No entendió la intención</td><td><b>Intent Resolution</b></td></tr>
+        <tr><td>Se sale de sus instrucciones</td><td><b>Task Adherence</b></td></tr>
+        <tr><td>Tool equivocada</td><td><b>Tool Selection</b></td></tr>
+        <tr><td>Tool correcta, parámetros malos</td><td><b>Tool Input Accuracy</b></td></tr>
+        <tr><td>Calidad de traducción o similitud con ground truth</td><td>BLEU, METEOR, F1, ROUGE, GLEU</td></tr>
+        <tr><td>Cayó en una inyección indirecta</td><td><b>Indirect Attack (XPIA)</b></td></tr>
+      </table></div>
+    </div>
+
+    <div class="block"><h3>Optimizar y observar</h3>
+      <div class="split">
+        <div class="tile"><b>Ajuste</b>Instrucciones claras, ejemplos, salida estructurada. Cambia <code>temperature</code> o <code>top_p</code>, no ambos.</div>
+        <div class="tile"><b>Reflexión</b>Generar, criticar y revisar. Puede ser un segundo agente evaluador o un bucle limitado.</div>
+        <div class="tile"><b>Observabilidad</b>Conecta Application Insights y revisa trazas, tokens, señales de seguridad y latencia por paso.</div>
+        <div class="tile"><b>Orquestación</b>Combina varios modelos y reglas: lo determinista va en código, lo ambiguo en el LLM.</div>
+      </div>
+    </div>
+
+    <div class="traps"><h4>Trampas del dominio</h4><ul>
+      <li><code>allowed_tools=[]</code> permite <b>todas</b> las herramientas del servidor MCP, no ninguna.</li>
+      <li>Function calling no ejecuta nada por sí solo. Tu app devuelve el resultado al modelo.</li>
+      <li>Memory es para lo aprendido del usuario, no para documentos corporativos.</li>
+      <li>La evaluación a nivel de conversación exige datos en formato <code>messages</code>.</li>
+      <li>Si la tarea cabe en una función normal, no necesitas un agente.</li>
+    </ul></div>
+  </article>
+
+  <article class="dom" data-d="3" hidden>
+    <div class="domhead"><span class="dnum c3">D3</span><div><h2>Visión por computadora</h2><span class="dpct">10-15 % · martes</span></div></div>
+    <div class="block"><h3>Decide primero el camino</h3>
+      <div class="pick">
+        <div class="tile"><b>Crear una imagen</b><div class="q">Del texto a la imagen</div>Serie <code>gpt-image</code>, operación <code>generations</code>.</div>
+        <div class="tile"><b>Editar una imagen</b><div class="q">Inpainting o cambios por prompt</div>Operación <code>edits</code>, en <code>multipart/form-data</code>.</div>
+        <div class="tile"><b>Crear o editar video</b><div class="q">Job asíncrono</div>Sora 2 (preview), con remix para retoques.</div>
+        <div class="tile"><b>Entender una imagen</b><div class="q">Captions, alt text, preguntas</div>Modelo multimodal con <code>input_image</code>.</div>
+        <div class="tile"><b>Extraer datos a escala</b><div class="q">Imagen o video con esquema repetible</div>Content Understanding.</div>
+      </div>
+    </div>
+    <div class="block"><h3>Máscara de inpainting</h3>
+      <div class="flow">
+        <div class="step"><b>Imagen</b>PNG o JPG, menos de 50 MB, hasta 16</div><span class="arw">+</span>
+        <div class="step hot"><b>Máscara</b>PNG del mismo tamaño</div><span class="arw">→</span>
+        <div class="step gate"><b>Alpha = 0</b>Lo transparente es lo que se edita</div><span class="arw">→</span>
+        <div class="step"><b>Salida</b><code>b64_json</code></div>
+      </div>
+      <div class="tw"><table>
+        <tr><th>Parámetro</th><th>Clave</th></tr>
+        <tr><td><code>background=transparent</code></td><td>Requiere <code>output_format=png</code></td></tr>
+        <tr><td><code>output_compression</code></td><td>Solo JPEG</td></tr>
+        <tr><td><code>input_fidelity</code></td><td>Solo edits; conserva rostros y estilo</td></tr>
+        <tr><td><code>n</code></td><td>1 a 10 imágenes</td></tr>
+        <tr><td><code>quality</code></td><td><code>low</code>, <code>medium</code>, <code>high</code>; los modelos 2.5 añaden niveles</td></tr>
+        <tr><td><code>stream</code> + <code>partial_images</code></td><td>Imágenes parciales durante la generación</td></tr>
+      </table></div>
+    </div>
+    <div class="block"><h3>Ciclo de un video con Sora 2</h3>
+      <div class="flow">
+        <div class="step hot"><b>Create</b>prompt, <code>size</code>, <code>seconds</code></div><span class="arw">→</span>
+        <div class="step"><b>queued</b>En cola</div><span class="arw">→</span>
+        <div class="step"><b>in_progress</b>Consulta el estado</div><span class="arw">→</span>
+        <div class="step"><b>completed</b>o <code>failed</code></div><span class="arw">→</span>
+        <div class="step hot"><b>Download</b>MP4</div><span class="arw">→</span>
+        <div class="step"><b>Remix</b><code>remix_video_id</code>: un cambio claro</div>
+      </div>
+      <p>Valores: <code>720x1280</code> o <code>1280x720</code>, y 4, 8 o 12 segundos. <code>input_reference</code> debe coincidir exactamente con <code>size</code>.</p>
+    </div>
+    <div class="block"><h3>Content Understanding para visión</h3>
+      <p>Single-task, el modo standard, procesa un archivo por tarea. Pro mode razonaba en varios pasos sobre documentos y referencias. Esa versión preview se retiró, y su sucesor es <b>agentic mode</b> en <code>2026-06-01-preview</code>. Pro mode sigue en el temario, así que entiende la diferencia conceptual.</p>
+      <p>Para video usa <code>prebuilt-videoSearch</code>: segmenta por escenas, transcribe y describe cada segmento.</p>
+    </div>
+    <div class="traps"><h4>Trampas del dominio</h4><ul>
+      <li><code>dall-e-3</code> se retiró el 4 de marzo de 2026. Una opción con DALL·E probablemente sea el distractor.</li>
+      <li>Sora rechaza imágenes de entrada con rostros humanos y no genera personas reales.</li>
+      <li>El texto dentro de una imagen puede ser una inyección indirecta. Trátalo como contenido no confiable.</li>
+      <li>Para procedencia, piensa en marcas y Content Credentials, no en filtros de contenido.</li>
+    </ul></div>
+  </article>
+
+  <article class="dom" data-d="4" hidden>
+    <div class="domhead"><span class="dnum c4">D4</span><div><h2>Análisis de texto y voz</h2><span class="dpct">10-15 % · martes</span></div></div>
+    <div class="block"><h3>LLM o herramienta especializada</h3>
+      <div class="tw"><table>
+        <tr><th>Tarea</th><th>Herramienta</th><th>Pista del enunciado</th></tr>
+        <tr><td>Detectar y ocultar PII</td><td>Language: PII detection</td><td>Texto, conversación o documentos</td></tr>
+        <tr><td>Entidades estándar</td><td>Language: Prebuilt NER</td><td>Sin entrenar</td></tr>
+        <tr><td>Entidades de tu dominio</td><td>Language: Custom NER</td><td>Etiquetas propias, datos de ejemplo</td></tr>
+        <tr><td>Información clínica</td><td>Text analytics for health</td><td>Documentos médicos</td></tr>
+        <tr><td>JSON con campos exactos</td><td>LLM con structured outputs</td><td>Esquema estricto</td></tr>
+        <tr><td>Resumen de cumplimiento</td><td>LLM con prompt de dominio</td><td>Tono o formato a medida</td></tr>
+        <tr><td>Traducción consistente</td><td>Azure Translator</td><td>Volumen y terminología estable</td></tr>
+        <tr><td>Traducción con matices</td><td>Flujo con LLM</td><td>Adaptar tono o contexto</td></tr>
+      </table></div>
+      <p class="note">Sentiment, key phrases, summarization y CLU aparecen ahora como capacidades legacy de Azure Language. Siguen soportadas, y hoy se resuelven a menudo con un LLM. Lo recomendado para desarrollo nuevo es PII, language detection, NER y health.</p>
+<pre><code>r = client.responses.create(
+    model="gpt-5-mini",
+    input="Extrae cliente y monto: ...",
+    text={"format": {"type": "json_schema", "name": "pedido",
+                     "schema": ESQUEMA, "strict": True}},
+)</code></pre>
+    </div>
+    <div class="block"><h3>Dos arquitecturas de voz</h3>
+      <div class="lane"><p class="eyebrow">Speech-to-speech nativo: menor latencia</p>
+        <div class="flow"><div class="step">Audio del usuario</div><span class="arw">→</span><div class="step hot"><b>Modelo realtime</b></div><span class="arw">→</span><div class="step">Respuesta hablada</div></div></div>
+      <div class="lane"><p class="eyebrow">En cascada: más control, cada etapa suma latencia</p>
+        <div class="flow"><div class="step">Audio</div><span class="arw">→</span><div class="step"><b>Speech to text</b></div><span class="arw">→</span><div class="step hot"><b>Modelo de texto</b></div><span class="arw">→</span><div class="step"><b>Text to speech</b></div><span class="arw">→</span><div class="step">Respuesta</div></div></div>
+      <div class="tw"><table>
+        <tr><th>Necesidad</th><th>Elige</th></tr>
+        <tr><td>Voz en tiempo real sin armar la orquestación</td><td><b>Voice Live API</b></td></tr>
+        <tr><td>Reconocer unos términos ya, sin entrenar</td><td><b>Phrase list</b></td></tr>
+        <tr><td>Jerga o acento que exige entrenamiento</td><td><b>Custom speech</b></td></tr>
+        <tr><td>Voz de marca</td><td><b>Custom voice</b>, con acceso limitado</td></tr>
+        <tr><td>Analizar grabaciones de llamadas</td><td><code>prebuilt-callCenter</code> o <code>prebuilt-audioSearch</code></td></tr>
+        <tr><td>Controlar pronunciación y pausas al sintetizar</td><td><b>SSML</b></td></tr>
+      </table></div>
+    </div>
+    <div class="traps"><h4>Trampas del dominio</h4><ul>
+      <li>Voice Live no pide desplegar los modelos que gestiona de forma nativa.</li>
+      <li>Voice Live funciona por WebSocket y se conecta desde tu backend.</li>
+      <li>La tarifa Pro, Standard o Lite depende del modelo: no se elige por separado.</li>
+      <li>Los guardrails no cubren prompts y salidas de modelos de transcripción de audio.</li>
+    </ul></div>
+  </article>
+
+  <article class="dom" data-d="5" hidden>
+    <div class="domhead"><span class="dnum c5">D5</span><div><h2>Extracción de información</h2><span class="dpct">10-15 % · lunes</span></div></div>
+    <div class="block"><h3>Pipeline RAG completo</h3>
+      <div class="lane"><p class="eyebrow">Ingesta: antes de que alguien pregunte</p>
+        <div class="flow">
+          <div class="step"><b>Fuente</b>Blob, SharePoint, OneLake</div><span class="arw">→</span>
+          <div class="step"><b>Crack y OCR</b>Layout y figuras</div><span class="arw">→</span>
+          <div class="step"><b>Chunking</b>Text Split o semántico</div><span class="arw">→</span>
+          <div class="step hot"><b>Embeddings</b>Mismo modelo siempre</div><span class="arw">→</span>
+          <div class="step"><b>Índice</b>Texto y vectores</div>
+        </div></div>
+      <div class="lane"><p class="eyebrow">Consulta: en cada pregunta</p>
+        <div class="flow">
+          <div class="step"><b>Pregunta</b></div><span class="arw">→</span>
+          <div class="step"><b>Vectorizar</b></div><span class="arw">→</span>
+          <div class="step hot"><b>Híbrida</b>BM25 + vector + RRF</div><span class="arw">→</span>
+          <div class="step"><b>Semantic ranker</b>Reordena</div><span class="arw">→</span>
+          <div class="step"><b>LLM</b>Responde con citas</div>
+        </div></div>
+    </div>
+    <div class="block"><h3>Escalera de búsqueda</h3>
+      <div class="tw" style="padding:8px 8px 0"><div class="stairs">
+        <div style="min-height:98px"><b>Keyword</b>BM25. Ideal para códigos, nombres y fechas.</div>
+        <div style="min-height:128px"><b>Vector</b>Similitud de concepto, con HNSW o eKNN.</div>
+        <div style="min-height:158px"><b>Hybrid</b>Ambas en una solicitud, fusionadas con RRF.</div>
+        <div style="min-height:188px"><b>Semantic</b>Reranking L2 con <code>queryType: semantic</code>.</div>
+        <div style="min-height:218px"><b>Agentic retrieval</b>Divide en subconsultas, las ejecuta en paralelo y une resultados.</div>
+      </div></div>
+<pre><code>{ "search": "garantía del modelo X200",
+  "vectorQueries": [{"kind":"vector","vector":[...],"fields":"contentVector","k":50}],
+  "queryType": "semantic",
+  "semanticConfiguration": "cfg" }</code></pre>
+      <p class="note">Con semantic ranker usa <code>k=50</code> para darle suficientes candidatos. Agentic retrieval requiere knowledge base y knowledge source. Su reasoning effort puede ser <code>minimal</code>, <code>low</code> (predeterminado) o <code>medium</code>. <code>minimal</code> omite la planificación; lo que usa LLM para planificar sigue en preview.</p>
+    </div>
+    <div class="block"><h3>Enriquecimiento con skills</h3>
+      <div class="split">
+        <div class="tile"><b>Built-in</b>OCR, Text Split, entity recognition, key phrases, layout, embeddings.</div>
+        <div class="tile"><b>Custom Web API skill</b>Tu lógica propia, llamada durante la indexación.</div>
+        <div class="tile"><b>Piezas</b>Data source, indexer, skillset, índice. El indexer orquesta y puede ejecutarse por horario.</div>
+      </div>
+    </div>
+    <div class="block"><h3>Content Understanding de punta a punta</h3>
+      <div class="flow">
+        <div class="step"><b>Entrada</b>Documento, imagen, audio, video</div><span class="arw">→</span>
+        <div class="step hot"><b>Analyzer</b>Prebuilt o custom</div><span class="arw">→</span>
+        <div class="step"><b>Extracción</b>OCR y layout</div><span class="arw">→</span>
+        <div class="step"><b>Segmentación</b><code>enableSegment</code></div><span class="arw">→</span>
+        <div class="step"><b>Campos</b>Extract, classify, generate</div><span class="arw">→</span>
+        <div class="step hot"><b>Salida</b>Markdown o JSON</div>
+      </div>
+      <div class="tw"><table>
+        <tr><th>Quiero</th><th>Analyzer</th><th>¿Requiere LLM?</th></tr>
+        <tr><td>OCR básico</td><td><code>prebuilt-read</code></td><td>No</td></tr>
+        <tr><td>OCR, tablas y estructura</td><td><code>prebuilt-layout</code></td><td>No</td></tr>
+        <tr><td>Ingesta de documentos para RAG</td><td><code>prebuilt-documentSearch</code></td><td>Sí</td></tr>
+        <tr><td>Factura, recibo, contrato, identidad</td><td><code>prebuilt-invoice</code>, <code>-receipt</code>, <code>-contract</code>, <code>-idDocument</code></td><td>Sí</td></tr>
+        <tr><td>Mi propio esquema</td><td>Custom con <code>baseAnalyzerId</code>: document, image, audio o video</td><td>Sí</td></tr>
+      </table></div>
+    </div>
+    <div class="traps"><h4>Trampas del dominio</h4><ul>
+      <li>El método <b>Extract</b> solo funciona con documentos. Para video o audio usa Generate o Classify.</li>
+      <li>Confianza y grounding se activan con <code>estimateFieldSourceAndConfidence</code>.</li>
+      <li>Si cambias el modelo de embeddings debes vectorizar de nuevo todo el índice.</li>
+      <li>Markdown sirve para RAG y razonamiento. JSON sirve para automatización.</li>
+      <li>En producción copia el prebuilt: su definición puede cambiar entre versiones de API.</li>
+      <li>Usa <code>orderby</code> con cuidado: anula el orden por relevancia.</li>
+    </ul></div>
+  </article>
+</section>
+
+<!-- TARJETAS -->
+<section class="view" id="v-tarjetas" hidden>
+  <div class="block">
+    <div class="head"><h2>Tarjetas Leitner</h2>
+    <p class="lede">Intenta responder en voz alta antes de voltear. Las que fallas vuelven primero, así inviertes tu tiempo en lo que aún no recuerdas.</p></div>
+    <div class="chips" id="cardchips"></div>
+    <div class="leitner" id="leitner"></div>
+    <div id="cardarea" class="block"></div>
+  </div>
+</section>
+
+<!-- SIMULACRO -->
+<section class="view" id="v-simulacro" hidden>
+  <div class="block">
+    <div class="head"><h2>Simulacro por escenarios</h2>
+    <p class="lede">Preguntas originales escritas para entrenar decisiones; no son preguntas reales del examen. Tu meta de entrenamiento es llegar a 80 % en cada dominio.</p></div>
+    <div class="chips" id="quizchips"></div>
+    <div id="quizarea" class="block"></div>
+  </div>
+  <div class="block">
+    <h3>Tu resultado por dominio</h3>
+    <div class="scale"><i id="scalebar"></i><u></u></div>
+    <div class="scalel"><span>0</span><span id="scaletxt">Sin respuestas</span><span>1000</span></div>
+    <div class="bydom" id="bydom"></div>
+    <p class="note">La línea roja marca 700 como referencia visual. Microsoft no publica una conversión directa de aciertos a puntaje, así que este valor no predice tu nota real.</p>
+    <div><button class="btn" id="resetquiz">Borrar resultados del simulacro</button></div>
+  </div>
+</section>
+
+<!-- REPASO -->
+<section class="view" id="v-repaso" hidden>
+  <div class="block">
+    <div class="head"><h2>Reglas del día del examen</h2></div>
+    <div class="split">
+      <div class="tile"><b>Tiempo</b>120 minutos de examen, 140 de asiento. Mínimo aprobatorio: 700.</div>
+      <div class="tile"><b>Preguntas</b>La mayoría de los exámenes trae 40-60. Revisa los tipos en el sandbox.</div>
+      <div class="tile"><b>Microsoft Learn</b>Disponible durante el examen, pero el reloj no se detiene. Úsalo para confirmar, no para aprender.</div>
+      <div class="tile"><b>Pausas</b>El reloj sigue, y después de una pausa no puedes volver a las preguntas ya vistas.</div>
+      <div class="tile"><b>Bloques problema-solución</b>Normalmente no permiten volver atrás. Decide cada una antes de avanzar.</div>
+      <div class="tile"><b>Si no apruebas</b>Puedes repetirlo tras 24 horas. Después, la espera depende de la política de reintentos.</div>
+    </div>
+  </div>
+  <div class="block">
+    <div class="head"><h2>Búsquedas rápidas en Learn</h2>
+    <p class="lede">Practica encontrar estas páginas en menos de un minuto. Es lo que más tiempo te ahorra si dudas durante el examen.</p></div>
+    <div class="tw"><table>
+      <tr><th>Duda</th><th>Busca</th></tr>
+      <tr><td>Tipo de despliegue</td><td>deployment types Foundry Models</td></tr>
+      <tr><td>Rol mínimo</td><td>role-based access control Microsoft Foundry</td></tr>
+      <tr><td>Evaluador</td><td>built-in evaluators reference</td></tr>
+      <tr><td>Guardrail</td><td>guardrails and controls overview</td></tr>
+      <tr><td>Analyzer</td><td>Content Understanding prebuilt analyzers</td></tr>
+      <tr><td>Búsqueda</td><td>hybrid search overview · agentic retrieval overview</td></tr>
+    </table></div>
+  </div>
+  <div class="block">
+    <div class="head"><h2>Acordeón de 20 minutos</h2></div>
+    <div class="sheet">
+      <div class="tile"><h4>Despliegue</h4><ul><li>Sin requisito: Global Standard</li><li>Datos en UE: Data Zone</li><li>Constante y crítico: PTU</li><li>Asíncrono y barato: Batch, 50 % menos</li></ul></div>
+      <div class="tile"><h4>Identidad</h4><ul><li>Sin secretos: managed identity</li><li>Solo invoca: Agent Consumer</li><li>Construye: Foundry User</li><li>Cuota: Usages Reader en suscripción</li></ul></div>
+      <div class="tile"><h4>Guardrails</h4><ul><li>Low bloquea solo severidad alta</li><li>High bloquea todo</li><li>Tool call y tool response: solo agentes</li><li>Guardrail del agente reemplaza al del modelo</li></ul></div>
+      <div class="tile"><h4>Agentes</h4><ul><li>Sin código: prompt agent</li><li>Tu código: hosted agent</li><li>Definición en la app: Responses API</li><li>Datos propios: standard setup</li></ul></div>
+      <div class="tile"><h4>Conocimiento</h4><ul><li>Sesión: conversation</li><li>Entre sesiones: memory</li><li>Corporativo: Foundry IQ</li><li>Archivo del usuario: file search</li></ul></div>
+      <div class="tile"><h4>Búsqueda</h4><ul><li>Código exacto: keyword</li><li>Concepto: vector</li><li>Ambos: hybrid con RRF</li><li>Reordenar: semantic ranker</li><li>Multipregunta: agentic retrieval</li></ul></div>
+      <div class="tile"><h4>Documentos</h4><ul><li>OCR sin LLM: prebuilt-read</li><li>Estructura sin LLM: prebuilt-layout</li><li>RAG: prebuilt-documentSearch</li><li>Esquema propio: custom analyzer</li></ul></div>
+      <div class="tile"><h4>Medios</h4><ul><li>Máscara: PNG, mismo tamaño, alpha 0</li><li>Video: job asíncrono</li><li>Retoque: remix, un cambio</li><li>Fondo transparente: PNG</li></ul></div>
+      <div class="tile"><h4>Voz y texto</h4><ul><li>Tiempo real: Voice Live</li><li>Términos rápidos: phrase list</li><li>Entrenar voz a texto: custom speech</li><li>JSON exacto: structured outputs</li></ul></div>
+    </div>
+  </div>
+  <div class="block">
+    <div class="head"><h2>Por qué pueden diferir algunos nombres</h2></div>
+    <div class="warnbox"><p>El temario es del 16 de abril de 2026 y Foundry ha cambiado desde entonces. Si el examen usa <b>Azure AI User</b>, equivale a <b>Foundry User</b>. Si menciona pro mode o workflows, responde según el concepto. Microsoft indica que casi todas las preguntas cubren funciones GA, pero puede incluir preview si es de uso común. Las versiones traducidas se actualizan unas ocho semanas después de la inglesa.</p></div>
+  </div>
+  <div class="block">
+    <div class="head"><h2>Fuentes oficiales</h2></div>
+    <ul class="srcs">
+      <li><a href="https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-103" target="_blank" rel="noopener">Guía de estudio AI-103</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/credentials/certifications/azure-ai-apps-and-agents-developer-associate/" target="_blank" rel="noopener">Página de la certificación</a></li>
+      <li><a href="http://aka.ms/AI103-PA" target="_blank" rel="noopener">Practice Assessment</a></li>
+      <li><a href="https://aka.ms/examdemo" target="_blank" rel="noopener">Exam sandbox</a></li>
+      <li><a href="https://aka.ms/AI103-ExamPrep" target="_blank" rel="noopener">Videos de preparación</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/credentials/support/exam-duration-exam-experience" target="_blank" rel="noopener">Duración y experiencia del examen</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/deployment-types" target="_blank" rel="noopener">Tipos de despliegue</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry" target="_blank" rel="noopener">RBAC en Foundry</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/quota" target="_blank" rel="noopener">Cuotas y 429</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/foundry/guardrails/guardrails-overview" target="_blank" rel="noopener">Guardrails</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/overview" target="_blank" rel="noopener">Foundry Agent Service</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/model-context-protocol" target="_blank" rel="noopener">Tool MCP</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/what-is-memory" target="_blank" rel="noopener">Memory</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/what-is-foundry-iq" target="_blank" rel="noopener">Foundry IQ</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/workflow" target="_blank" rel="noopener">Workflows y migración</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/agent-framework/overview/" target="_blank" rel="noopener">Microsoft Agent Framework</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/foundry/concepts/built-in-evaluators" target="_blank" rel="noopener">Evaluadores</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/search/hybrid-search-overview" target="_blank" rel="noopener">Búsqueda híbrida</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/search/agentic-retrieval-overview" target="_blank" rel="noopener">Agentic retrieval</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/prebuilt-analyzers" target="_blank" rel="noopener">Prebuilt analyzers</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/standard-pro-modes" target="_blank" rel="noopener">Standard y pro mode</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/dall-e" target="_blank" rel="noopener">Generación de imágenes</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/video-generation" target="_blank" rel="noopener">Sora 2</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/ai-services/language-service/overview" target="_blank" rel="noopener">Azure Language</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/ai-services/speech-service/voice-live" target="_blank" rel="noopener">Voice Live</a></li>
+    </ul>
+  </div>
+</section>
+</main>
+
+<script>
+(function(){
+"use strict";
+var DOMS={1:"Planificar y administrar",2:"IA generativa y agentes",3:"Visión",4:"Texto y voz",5:"Extracción"};
+var WEIGHTS=[[1,"Planificar y administrar",25,30],[2,"IA generativa y agentes",30,35],[3,"Visión por computadora",10,15],[4,"Análisis de texto y voz",10,15],[5,"Extracción de información",10,15]];
+
+var PLAN=[
+ {d:"2026-10-31",n:"Sáb 31",h:"4 h",t:"Diagnóstico y dominio 1",k:[
+  ["Practice Assessment oficial como diagnóstico. Anota tus áreas débiles.","45 min"],
+  ["D1: recursos, despliegues, cuotas, roles y seguridad.","1 h 30"],
+  ["Laboratorio: proyecto, despliegue y llamada keyless.","45 min"],
+  ["Simulacro D1 y tarjetas D1 sin mirar.","30 min"],
+  ["Corrige tus errores y deja listas las tarjetas de la caja 1.","30 min"]]},
+ {d:"2026-11-01",n:"Dom 1",h:"4 h",t:"Agentes y RAG",k:[
+  ["Repaso espaciado: caja 1 de ayer.","15 min"],
+  ["D2: tipos de agente, tools, conocimiento y código.","1 h 15"],
+  ["Laboratorio: prompt agent, conversation y MCP con aprobación.","1 h"],
+  ["D2: multiagente, evaluadores y observabilidad.","45 min"],
+  ["Simulacro D2 y corrección.","45 min"]]},
+ {d:"2026-11-02",n:"Lun 2",h:"2 h 30",t:"Recuperación e IA responsable",k:[
+  ["Repaso espaciado: cajas 1 y 2.","15 min"],
+  ["D5: RAG, búsqueda, skills y Content Understanding.","1 h"],
+  ["D1: guardrails, intervención y bloqueo.","30 min"],
+  ["Simulacro D5 y D1 con corrección.","45 min"]]},
+ {d:"2026-11-03",n:"Mar 3",h:"2 h 30",t:"Visión, texto y voz",k:[
+  ["Repaso espaciado: cajas 1 y 2.","15 min"],
+  ["D3: imagen, video, multimodal y seguridad.","45 min"],
+  ["D4: Language, Translator, Speech y Voice Live.","45 min"],
+  ["Simulacro D3 y D4 con corrección.","45 min"]]},
+ {d:"2026-11-04",n:"Mié 4",h:"2 h 30",t:"Ensayo general",k:[
+  ["Practice Assessment completo y con tiempo.","1 h"],
+  ["Refuerza solo tus dos áreas más débiles.","45 min"],
+  ["Exam sandbox y búsquedas rápidas en Learn.","30 min"],
+  ["Acordeón completo. Cierra y descansa.","15 min"]]},
+ {d:"2026-11-05",n:"Jue 5",h:"Examen",t:"Día del examen",k:[
+  ["Acordeón una vez. No estudies temas nuevos.","20 min"],
+  ["Si es en línea, prueba tu equipo e inicia el check-in con antelación.","30 min"],
+  ["Rinde el examen. Marca para revisión lo que dudes.","120 min"]]}
+];
+
+var CARDS=[
+[1,"¿Qué tipo de despliegue es el punto de partida recomendado?","Global Standard: modelos nuevos primero, menor precio y más regiones."],
+[1,"¿Qué aporta Data Zone frente a Global?","Procesa los datos solo dentro de la zona: US, EU o APAC."],
+[1,"¿Cuándo eliges PTU?","Con volumen alto y constante, y cuando necesitas baja variación de latencia."],
+[1,"¿Cuánto ahorra Batch y qué objetivo tiene?","50 % frente a Global Standard, con objetivo de 24 horas y cuota separada."],
+[1,"¿Qué rol da acceso mínimo a quien solo invoca agentes?","Foundry Agent Consumer, a nivel de proyecto o de un agente."],
+[1,"¿Qué rol tiene mínimo privilegio para construir agentes?","Foundry User, antes Azure AI User."],
+[1,"¿Qué rol mínimo puede publicar agentes?","Foundry Project Manager en el recurso."],
+[1,"¿Dónde se asigna Cognitive Services Usages Reader?","En la suscripción. En otros alcances no autoriza la API de uso."],
+[1,"¿Se aplica RBAC si autenticas con API key?","No. La clave da acceso total sin restricciones de rol."],
+[1,"¿Qué guarda cada recurso BYO en standard setup?","Cosmos DB: mensajes y metadatos. Storage: archivos. AI Search: vector stores."],
+[1,"¿Puedes cambiar los recursos BYO de un proyecto existente?","No. Debes eliminar y recrear el proyecto."],
+[1,"¿Qué nivel de bloqueo solo bloquea severidad alta?","Low. High bloquea severidad baja, media y alta."],
+[1,"¿Qué guardrail usa un agente sin guardrail propio?","El de su despliegue de modelo."],
+[1,"¿Qué encabezado indica cuánto esperar tras un 429?","retry-after-ms."],
+[1,"¿Por qué hay 429 con uso por debajo de la cuota?","Por ráfagas en ventanas de 1-10 s, solicitudes rechazadas o un ajuste temporal."],
+[2,"¿Con qué paquete y clientes trabaja el SDK nuevo?","azure-ai-projects 2.x, AIProjectClient y un cliente OpenAI desde get_openai_client()."],
+[2,"¿Qué reemplaza a threads, messages y runs?","Conversations, items y responses."],
+[2,"¿Qué significa agente efímero?","Definición en tu código y llamada directa a Responses API, sin recurso de agente."],
+[2,"¿Quién ejecuta una función en function calling?","Tu aplicación, que luego devuelve el resultado al modelo."],
+[2,"¿Qué hace allowed_tools=[] en MCP?","Permite todas las herramientas. Para restringir, lista nombres concretos."],
+[2,"¿Cómo se responde a una aprobación MCP?","Con mcp_approval_response y approve, enlazado con previous_response_id."],
+[2,"¿Qué tipos de memoria tiene Foundry?","User profile, chat summary y procedural."],
+[2,"¿Qué es un Toolbox?","Un conjunto versionado de tools expuesto en un endpoint MCP gestionado."],
+[2,"¿Qué es Foundry IQ?","Capa de conocimiento con knowledge bases reutilizables que respetan permisos, sobre AI Search."],
+[2,"¿Qué reemplaza a los workflows visuales?","Microsoft Agent Framework, con despliegue como hosted agent. Para canvas visual: Logic Apps."],
+[2,"¿Qué protocolo conecta dos agentes sin flujo formal?","A2A, agent-to-agent."],
+[2,"¿Groundedness o Relevance?","Groundedness compara con el contexto. Relevance compara con la pregunta."],
+[2,"¿Qué requiere la evaluación a nivel de conversación?","Datos en formato messages."],
+[2,"¿Qué recurso necesitas para ver trazas?","Application Insights conectado al proyecto."],
+[3,"¿Qué requisitos tiene una máscara?","PNG, mismo tamaño que la imagen y alpha 0 en la zona a editar."],
+[3,"¿Qué formato requiere un fondo transparente?","PNG."],
+[3,"¿Qué devuelven GPT-Image-2 y la serie gpt-image-1?","Base64 en b64_json, sin opción de URL."],
+[3,"¿Qué estados tiene un video de Sora?","queued, in_progress, completed y failed."],
+[3,"¿Qué duraciones y tamaños admite Sora 2?","4, 8 o 12 segundos; 720x1280 o 1280x720."],
+[3,"¿Cómo editas un video completado?","Con remix_video_id y un prompt con un cambio claro."],
+[3,"¿Qué ataque esconde instrucciones en una imagen?","Inyección indirecta de prompt mediante texto incrustado."],
+[4,"¿Qué capacidades de Language recomienda Microsoft para desarrollo nuevo?","PII, language detection, NER y text analytics for health."],
+[4,"¿Prebuilt NER o Custom NER?","Prebuilt para categorías estándar. Custom para entidades de tu dominio."],
+[4,"¿Cómo garantizas JSON con un esquema exacto?","Con structured outputs: json_schema y strict true."],
+[4,"¿Qué ofrece Voice Live?","STT, modelo y TTS unificados, con cancelación de eco, ruido y detección de turno."],
+[4,"¿Phrase list o custom speech?","Phrase list para ajuste rápido. Custom speech para entrenar el reconocimiento."],
+[5,"¿Cómo combina resultados una consulta híbrida?","Con Reciprocal Rank Fusion, RRF."],
+[5,"¿Qué parámetros forman una consulta híbrida?","search y vectorQueries en la misma solicitud."],
+[5,"¿Qué k se recomienda con semantic ranker?","50."],
+[5,"¿Qué hace la reasoning effort minimal?","Omite la planificación y envía la consulta directo a las fuentes."],
+[5,"¿Qué necesita agentic retrieval como mínimo?","Una knowledge base y al menos una knowledge source."],
+[5,"¿Qué analyzers no requieren LLM?","prebuilt-read, prebuilt-layout y prebuilt-digitalParse."],
+[5,"¿Cuál es el analyzer recomendado para ingesta RAG?","prebuilt-documentSearch."],
+[5,"¿Qué tres métodos tiene un campo?","Extract, Classify y Generate."],
+[5,"¿Qué propiedad activa confianza y grounding?","estimateFieldSourceAndConfidence."],
+[5,"¿Qué versión de Content Understanding es GA?","2025-11-01."]
+];
+
+/* [dominio, enunciado, opciones, índices correctos, explicación] */
+var QUIZ=[
+[1,"Una empresa europea debe procesar los prompts solo dentro de la UE. Su tráfico es variable y quiere pagar por token. ¿Qué tipo eliges?",["Global Standard","Data Zone Standard","Regional Provisioned","Global Batch"],[1],"Data Zone Standard limita el procesamiento a la zona EU y cobra por token. Provisioned reserva capacidad, algo innecesario con tráfico variable."],
+[1,"Debes resumir dos millones de documentos este fin de semana al menor costo. No hay restricción de residencia. ¿Qué eliges?",["Global Provisioned","Global Standard con más reintentos","Global Batch","DeveloperTier"],[2],"Batch cuesta 50 % menos, es asíncrono y usa una cuota separada que no afecta tus cargas en línea."],
+[1,"Una app crítica tiene volumen alto y constante, y el negocio exige baja variación de latencia. ¿Qué recomiendas?",["Provisioned con PTU","Global Standard","Data Zone Batch","Instant access"],[0],"Las PTU reservan capacidad y reducen la variación de latencia en cargas constantes."],
+[1,"Alguien de desarrollo debe crear agentes en un proyecto con modelos ya desplegados. Aplica mínimo privilegio.",["Foundry Owner en la suscripción","Contributor en el recurso","Foundry User en el proyecto","Azure AI Developer"],[2],"Foundry User da acceso de lectura y data actions para construir. Azure AI Developer aplica a workspaces de Azure ML y hubs, no a proyectos de Foundry."],
+[1,"Un service principal solo debe invocar un agente específico, sin ver otros. ¿Qué asignas?",["Foundry User en el recurso","Foundry Agent Consumer en el agente","Reader en el proyecto","Foundry Project Manager"],[1],"Agent Consumer es el rol mínimo para invocar, y el alcance de agente limita el acceso a ese endpoint."],
+[1,"Alguien de finanzas necesita ver la cuota disponible. Le asignaste Foundry User en el proyecto y sigue sin verla. ¿Qué falta?",["Cognitive Services Usages Reader en la suscripción","Foundry User en el grupo de recursos","Owner en el recurso","Foundry Agent Consumer"],[0],"La API de uso es de suscripción. Las asignaciones de grupo de recursos, recurso o proyecto no la autorizan."],
+[1,"Tu app recibe 429 aunque las métricas están por debajo de la cuota. Envía 300 solicitudes en un mismo segundo cada minuto. ¿Cuál es la mejor corrección?",["Subir max_output_tokens","Distribuir las solicitudes y respetar retry-after-ms","Cambiar a una API key","Quitar el guardrail"],[1],"RPM se evalúa en ventanas cortas de 1 a 10 segundos. Debes suavizar las ráfagas y reintentar con backoff."],
+[1,"Por cumplimiento, las conversaciones de los agentes deben quedarse en recursos de tu tenant. ¿Qué configuras?",["Basic agent setup","Standard setup con Cosmos DB, Storage y AI Search propios","Solo un private endpoint","Global Standard"],[1],"Standard setup guarda el estado en recursos gestionados por ti. Un private endpoint protege la red, no define dónde se guardan los datos."],
+[1,"Un proyecto con standard setup debe usar otra cuenta de Cosmos DB. ¿Qué haces?",["Editar la conexión","Actualizar capability settings en caliente","Eliminar y recrear el proyecto","Reiniciar el agente"],[2],"Las capability settings no se pueden actualizar en un proyecto existente, y sus conexiones son inmutables mientras se usan."],
+[1,"Quieres bloquear únicamente contenido violento de severidad alta. ¿Qué nivel configuras?",["Off","Low","Medium","High"],[1],"Low es el nivel menos restrictivo con bloqueo: solo bloquea severidad alta."],
+[1,"El despliegue tiene Violence en High. El agente tiene un guardrail propio con Violence en Low para input y output, sin controles para tools. ¿Qué pasa con las respuestas de tools?",["Se escanean en High","Se escanean en Low","No se escanean por Violence","El agente falla"],[2],"El guardrail del agente reemplaza por completo al del modelo. Sin control en ese punto, no hay escaneo."],
+[1,"Una web consultada por un agente contiene instrucciones ocultas para exfiltrar datos. ¿Qué control y punto configuras?",["Protected material en output","Indirect attacks en tool response","Hate en user input","Groundedness en tool call"],[1],"Es una inyección indirecta (XPIA). Debes revisar el contenido que regresa de la tool."],
+[1,"Una app en Azure debe llamar a Foundry sin guardar secretos. ¿Qué haces? Elige 2.",["Usar managed identity con Foundry User","Guardar la key en el código","Autenticar con DefaultAzureCredential","Asignar Cognitive Services Contributor al usuario final"],[0,2],"La identidad gestionada elimina secretos y DefaultAzureCredential obtiene el token en ejecución."],
+[1,"Quieres impedir que llegue a producción una versión de agente si baja Groundedness. ¿Qué añades a CI/CD?",["Una evaluación con umbral que falle el pipeline","Más TPM","Un Private Link","Un Toolbox"],[0],"Un gate de evaluación compara la calidad y detiene la promoción si no cumple el umbral."],
+[2,"¿Cómo mantienes historial entre turnos en el Agent Service nuevo?",["Crear un thread y un run","Usar openai.conversations.create() y pasar conversation","Reenviar instrucciones en el system prompt","Crear una versión por turno"],[1],"Conversations reemplaza a threads. Cada respuesta usa el id de la conversación."],
+[2,"Tu equipo ya tiene un agente en LangGraph y quiere endpoint, escalado e identidad gestionados. ¿Qué usas?",["Prompt agent","Hosted agent","Voice-based prompt agent","Workflow visual"],[1],"Hosted agent ejecuta tu código en un contenedor gestionado."],
+[2,"Quieres versionar la definición del agente con tu app, sin crear un recurso de agente. ¿Qué usas?",["Hosted agent","Responses API directa","Toolbox","Foundry IQ"],[1],"El patrón efímero define instrucciones y tools en tu código para cada llamada."],
+[2,"El modelo devolvió una function call para consultar_stock. ¿Qué sigue?",["Foundry ejecuta la función","Tu app la ejecuta y devuelve el resultado","El modelo adivina","Debes crear otro agente"],[1],"El modelo solo solicita la llamada. Tu código la ejecuta y envía la salida."],
+[2,"Un servidor MCP tiene 40 herramientas. Solo debes exponer 2 y aprobar cada llamada. ¿Qué configuras?",["allowed_tools=[] y require_approval never","allowed_tools con las 2 y require_approval always","Solo un guardrail","Un API key más restrictiva"],[1],"Una lista vacía permite todas. La lista explícita limita, y always activa la aprobación humana."],
+[2,"Un agente debe recordar entre sesiones que un cliente es alérgico a los lácteos. ¿Qué usas?",["File search","Memory","Conversation","Code interpreter"],[1],"Memory guarda información aprendida del usuario entre sesiones."],
+[2,"Tres agentes deben consultar contenido de SharePoint y Blob, y respetar permisos de cada usuario. ¿Qué usas?",["Foundry IQ","Memory","File search por agente","Code interpreter"],[0],"Foundry IQ ofrece una knowledge base compartida que aplica permisos en la consulta."],
+[2,"Un flujo legal siempre debe investigar, redactar y revisar en ese orden. ¿Qué patrón aplicas?",["Concurrent","Sequential","Magentic","Group chat"],[1],"Sequential pasa el resultado de un paso al siguiente en un orden definido."],
+[2,"Un agente de triaje transfiere al cliente al especialista en facturación, que toma el control. ¿Qué patrón es?",["Handoff","Concurrent","Sequential","Batch"],[0],"Handoff transfiere el control según el contexto."],
+[2,"Debes crear hoy una orquestación multiagente basada en código en Foundry. ¿Qué opción es la recomendada?",["Workflows visuales de Foundry","Microsoft Agent Framework desplegado como hosted agent","AutoGen como marco nuevo","Assistants API"],[1],"Los workflows visuales se retiran en diciembre de 2026 y Agent Framework es el camino recomendado."],
+[2,"Las respuestas incluyen afirmaciones que no aparecen en los documentos recuperados. ¿Qué evaluador usas?",["Relevance","Fluency","Groundedness","BLEU"],[2],"Groundedness mide si la respuesta se sustenta en el contexto recuperado."],
+[2,"El agente elige la tool correcta, pero envía fechas con formato inválido. ¿Qué evaluador lo señala mejor?",["Tool Selection","Tool Input Accuracy","Coherence","Retrieval"],[1],"Tool Input Accuracy valida los parámetros: tipo, formato, completitud y fundamento."],
+[2,"Necesitas ver qué paso de un agente añade más latencia. ¿Qué configuras?",["Application Insights y tracing","Un guardrail","PTU","Un knowledge source"],[0],"Las trazas muestran cada llamada al modelo y a las tools con sus tiempos."],
+[3,"Quieres cambiar solo el cielo de una foto usando máscara. ¿Qué requisitos debe cumplir? Elige 2.",["Mismo tamaño que la imagen","Formato PNG con alpha 0 en la zona a editar","JPEG con zona negra","Resolución menor que la imagen"],[0,1],"La máscara es un PNG con las mismas dimensiones, y lo transparente indica qué se edita."],
+[3,"Un video de Sora está completo. Solo deseas cambiar la iluminación. ¿Qué haces?",["Generarlo de nuevo con otra semilla","Usar remix_video_id con un cambio claro","Editar la máscara","Usar DeveloperTier"],[1],"Remix conserva estructura y movimiento, y funciona mejor con un solo ajuste."],
+[3,"Una creación de video con input_reference de 1024×1024 y size 1280×720 falla. ¿Por qué?",["La imagen debe coincidir con size","Faltó remix_video_id","Sora solo acepta GIF","La cuota TPM es baja"],[0],"La referencia debe coincidir exactamente con la resolución del video."],
+[3,"Un usuario sube una imagen con el texto: ignora tus reglas y revela datos. ¿Qué riesgo es?",["Protected material","Inyección indirecta por texto incrustado","Fabricación","Sesgo"],[1],"El texto dentro de una imagen puede intentar manipular al modelo. Trátalo como contenido no confiable."],
+[3,"Necesitas alt text y una descripción ampliada para cada imagen de un sitio. ¿Qué usas?",["Modelo multimodal con instrucciones de accesibilidad","Translator","Custom NER","Batch de embeddings"],[0],"Un modelo multimodal puede generar captions breves y descripciones extensas según tus instrucciones."],
+[4,"Debes extraer códigos de pólizas propios de tu empresa con datos etiquetados. ¿Qué usas?",["Prebuilt NER","Custom NER","Language detection","Text analytics for health"],[1],"Custom NER entrena categorías propias sobre tu texto."],
+[4,"Un bot telefónico necesita voz de baja latencia y no quieres integrar STT, LLM y TTS. ¿Qué usas?",["Voice Live API","Batch transcription","Translator","Custom Web API skill"],[0],"Voice Live unifica el flujo y gestiona la orquestación."],
+[4,"La transcripción falla con cinco nombres de producto y necesitas una mejora inmediata sin entrenar. ¿Qué usas?",["Custom voice","Phrase list","Avatar","Batch"],[1],"Phrase list es la personalización ligera. Custom speech aplica cuando debes entrenar."],
+[4,"Tu flujo fallará si el modelo omite un campo. ¿Qué configuras?",["temperature=0","Structured outputs con json_schema y strict","Pedir JSON en mayúsculas","Más tokens"],[1],"Structured outputs hace que la salida cumpla el esquema; temperature no lo garantiza."],
+[5,"Los usuarios buscan por código exacto y también por concepto. ¿Qué consulta usas?",["Solo vector","Solo keyword","Hybrid","Sugerencias"],[2],"Hybrid une precisión de keyword y similitud semántica."],
+[5,"Un usuario hace una pregunta con varias condiciones que dependen del historial. ¿Qué capacidad encaja mejor?",["Agentic retrieval","eKNN","Una sola consulta keyword","Autocomplete"],[0],"Agentic retrieval puede dividir en subconsultas y ejecutarlas en paralelo."],
+[5,"Debes extraer campos de facturas, con confianza y origen de cada valor. ¿Qué usas?",["prebuilt-invoice con estimateFieldSourceAndConfidence","prebuilt-read","Custom NER","Text Split"],[0],"El analyzer de dominio extrae los campos, y esa propiedad devuelve confianza y grounding."],
+[5,"Vas a indexar PDFs con tablas y gráficos para RAG. ¿Qué analyzer recomiendas?",["prebuilt-documentSearch","prebuilt-read","prebuilt-receipt","prebuilt-audioSearch"],[0],"Genera Markdown estructurado, describe figuras y prepara chunks."],
+[5,"Solo necesitas OCR y no tienes un LLM desplegado. ¿Qué analyzer usas?",["prebuilt-documentSearch","prebuilt-read","prebuilt-invoice","prebuilt-videoSearch"],[1],"prebuilt-read no requiere modelos de lenguaje ni embeddings."],
+[5,"Quieres un campo que resuma una llamada de audio. ¿Qué método usas?",["Extract","Generate","Classify","Split"],[1],"Extract solo funciona con documentos. Un resumen se genera."],
+[5,"Cambiaste de modelo de embeddings y los resultados vectoriales empeoraron. ¿Qué haces?",["Bajar k a 1","Vectorizar de nuevo el contenido con el mismo modelo que usan las consultas","Aumentar TPM","Desactivar RRF"],[1],"Índice y consultas deben usar el mismo espacio vectorial."],
+[5,"Debes llamar a tu algoritmo propietario durante la indexación. ¿Qué usas?",["Custom Web API skill","Semantic ranker","Scoring en el cliente","Un guardrail"],[0],"Una custom skill llama a tu endpoint dentro del skillset."]
+];
+
+var STORE="ai103-kit-v1";
+var state={tasks:{},boxes:{},seen:{},cardDom:0,quizDom:0};
+function load(){try{var s=localStorage.getItem(STORE);if(s){var o=JSON.parse(s);for(var k in o)state[k]=o[k]}}catch(e){}}
+function save(){try{localStorage.setItem(STORE,JSON.stringify(state))}catch(e){}}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function $(id){return document.getElementById(id)}
+load();
+
+/* Cuenta regresiva */
+function today(){var n=new Date();return n.getFullYear()+"-"+String(n.getMonth()+1).padStart(2,"0")+"-"+String(n.getDate()).padStart(2,"0")}
+(function(){
+  var ms=new Date(2026,10,5)-new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate());
+  var n=Math.round(ms/864e5);
+  if(n>0){$("daysleft").textContent=n;$("dayslabel").textContent=n===1?"día para el examen":"días para el examen"}
+  else if(n===0){$("daysleft").textContent="Hoy";$("dayslabel").textContent="es el examen"}
+  else{$("daysleft").textContent="Listo";$("dayslabel").textContent="el examen ya pasó"}
+})();
+
+/* Pesos */
+$("weights").innerHTML=WEIGHTS.map(function(w){
+  return '<div class="wrow"><span class="wname">'+w[1]+'</span><div class="wtrack"><i class="max c'+w[0]+'" style="width:'+(w[3]/40*100)+'%"></i><i class="c'+w[0]+'" style="width:'+(w[2]/40*100)+'%"></i></div><span class="wpct">'+w[2]+'-'+w[3]+' %</span></div>';
+}).join("");
+
+/* Plan */
+function renderPlan(){
+  var t=today();
+  $("days").innerHTML=PLAN.map(function(d,i){
+    var tag=d.d===t?'<span class="dtag">Hoy</span>':"";
+    return '<div class="day'+(d.d===t?" today":"")+'"><div class="dlabel"><b>'+d.n+'</b><span>'+d.h+'</span>'+tag+'</div><div><h3>'+d.t+'</h3><ul class="tasks">'+
+      d.k.map(function(k,j){var id="t"+i+"-"+j;
+        return '<li><label for="'+id+'"><input type="checkbox" id="'+id+'" data-t="'+id+'"'+(state.tasks[id]?" checked":"")+'><span>'+esc(k[0])+'</span><em>'+k[1]+'</em></label></li>';
+      }).join("")+'</ul></div></div>';
+  }).join("");
+  updatePlan();
+}
+function updatePlan(){
+  var all=PLAN.reduce(function(a,d){return a+d.k.length},0),done=Object.keys(state.tasks).filter(function(k){return state.tasks[k]}).length;
+  $("planbar").style.width=(done/all*100)+"%";
+  $("plantext").textContent=done+" de "+all+" tareas completadas";
+}
+$("days").addEventListener("change",function(e){var id=e.target.getAttribute("data-t");if(id){state.tasks[id]=e.target.checked;save();updatePlan()}});
+renderPlan();
+
+/* Temas */
+var doms=document.querySelectorAll(".dom");
+$("domchips").innerHTML=[1,2,3,4,5].map(function(d){return '<button class="chip" data-d="'+d+'" aria-pressed="'+(d===1)+'">D'+d+' · '+DOMS[d]+'</button>'}).join("");
+$("domchips").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
+  var d=b.getAttribute("data-d");
+  [].forEach.call($("domchips").children,function(c){c.setAttribute("aria-pressed",c===b)});
+  [].forEach.call(doms,function(a){a.hidden=a.getAttribute("data-d")!==d});
+});
+
+/* Filtros compartidos */
+function filterChips(el,key,cb){
+  el.innerHTML=[0,1,2,3,4,5].map(function(d){return '<button class="chip" data-d="'+d+'" aria-pressed="'+(state[key]===d)+'">'+(d?"D"+d:"Todos")+'</button>'}).join("");
+  el.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
+    state[key]=+b.getAttribute("data-d");save();
+    [].forEach.call(el.children,function(c){c.setAttribute("aria-pressed",c===b)});cb();
+  });
+}
+
+/* Tarjetas */
+var cur=null,flip=false;
+function box(i){return state.boxes[i]||0}
+function pool(){var r=[];CARDS.forEach(function(c,i){if(!state.cardDom||c[0]===state.cardDom)r.push(i)});return r}
+function nextCard(){
+  var p=pool(),order=[1,0,2,3],c=null;
+  for(var o=0;o<4&&c===null;o++){
+    var b=p.filter(function(i){return box(i)===order[o]&&i!==cur});
+    if(b.length)c=b[Math.floor(Math.random()*b.length)];
+  }
+  cur=c===null?p[0]:c;flip=false;renderCard();
+}
+function renderCard(){
+  var p=pool(),n=[0,0,0,0];p.forEach(function(i){n[box(i)]++});
+  $("leitner").innerHTML=[["Nuevas",0],["Caja 1: repetir hoy",1],["Caja 2: repetir mañana",2],["Caja 3: dominadas",3]].map(function(x){return '<div class="box"><b>'+n[x[1]]+'</b><span>'+x[0]+'</span></div>'}).join("");
+  var c=CARDS[cur];
+  var h='<button class="card" id="flip"><span class="tag" style="color:var(--d'+c[0]+')">D'+c[0]+' · '+DOMS[c[0]]+'</span><span class="front">'+esc(c[1])+'</span>'+
+    (flip?'<span class="back">'+esc(c[2])+'</span>':'<span class="note">Responde en voz alta. Luego pulsa para voltear.</span>')+'</button>';
+  if(flip)h+='<div class="rate"><button class="btn" data-r="1">No lo sabía</button><button class="btn" data-r="2">Dudé</button><button class="btn pri" data-r="3">Lo sabía</button></div>';
+  $("cardarea").innerHTML=h;
+}
+$("cardarea").addEventListener("click",function(e){
+  if(e.target.closest("#flip")){flip=true;renderCard();return}
+  var r=e.target.closest("[data-r]");if(r){state.boxes[cur]=+r.getAttribute("data-r");save();nextCard()}
+});
+filterChips($("cardchips"),"cardDom",nextCard);
+nextCard();
+
+/* Simulacro */
+var q=null,order=[],sel=[],answered=false;
+function qpool(){var r=[];QUIZ.forEach(function(x,i){if(!state.quizDom||x[0]===state.quizDom)r.push(i)});return r}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+function nextQ(){
+  var p=qpool();
+  var fresh=p.filter(function(i){return state.seen[i]===undefined&&i!==q});
+  var wrong=p.filter(function(i){return state.seen[i]===false&&i!==q});
+  var src=fresh.length?fresh:(wrong.length?wrong:p.filter(function(i){return i!==q}));
+  if(!src.length)src=p;
+  q=src[Math.floor(Math.random()*src.length)];
+  order=shuffle(QUIZ[q][2].map(function(_,i){return i}));sel=[];answered=false;renderQ();
+}
+function renderQ(){
+  var x=QUIZ[q],multi=x[3].length>1;
+  var h='<div class="qbox"><span class="tag" style="color:var(--d'+x[0]+')">D'+x[0]+' · '+DOMS[x[0]]+(multi?" · elige 2":"")+'</span><p class="qtext">'+esc(x[1])+'</p><div class="opts">';
+  order.forEach(function(o,i){
+    var cls="opt";
+    if(answered){if(x[3].indexOf(o)>=0)cls+=" ok";else if(sel.indexOf(o)>=0)cls+=" no"}
+    h+='<button class="'+cls+'" data-o="'+o+'" aria-pressed="'+(sel.indexOf(o)>=0)+'"'+(answered?" disabled":"")+'><span class="k">'+"ABCD".charAt(i)+'</span><span>'+esc(x[2][o])+'</span></button>';
+  });
+  h+='</div>';
+  if(multi&&!answered)h+='<div><button class="btn pri" id="check"'+(sel.length===2?"":" disabled")+'>Comprobar</button></div>';
+  if(answered){
+    var ok=isRight();
+    h+='<div class="why"><b style="color:var(--'+(ok?"good":"bad")+')">'+(ok?"Correcto.":"Incorrecto.")+'</b> '+esc(x[4])+'</div><div><button class="btn pri" id="nextq">Siguiente pregunta</button></div>';
+  }
+  $("quizarea").innerHTML=h+'</div>';
+  stats();
+}
+function isRight(){var a=QUIZ[q][3];return sel.length===a.length&&a.every(function(v){return sel.indexOf(v)>=0})}
+function grade(){answered=true;state.seen[q]=isRight();save();renderQ()}
+$("quizarea").addEventListener("click",function(e){
+  if(e.target.closest("#nextq")){nextQ();return}
+  if(e.target.closest("#check")){grade();return}
+  var b=e.target.closest("[data-o]");if(!b||answered)return;
+  var o=+b.getAttribute("data-o"),multi=QUIZ[q][3].length>1;
+  if(!multi){sel=[o];grade();return}
+  var i=sel.indexOf(o);if(i>=0)sel.splice(i,1);else if(sel.length<2)sel.push(o);
+  renderQ();
+});
+function stats(){
+  var tot=0,ok=0,per={1:[0,0],2:[0,0],3:[0,0],4:[0,0],5:[0,0]};
+  Object.keys(state.seen).forEach(function(k){if(!QUIZ[k])return;var d=QUIZ[k][0];per[d][1]++;tot++;if(state.seen[k]){per[d][0]++;ok++}});
+  var score=tot?Math.round(ok/tot*1000):0;
+  $("scalebar").style.width=(score/10)+"%";
+  $("scaletxt").textContent=tot?score+" de referencia · "+ok+"/"+tot+" correctas":"Sin respuestas";
+  var totals={1:0,2:0,3:0,4:0,5:0};QUIZ.forEach(function(x){totals[x[0]]++});
+  $("bydom").innerHTML=[1,2,3,4,5].map(function(d){
+    var p=per[d][1]?Math.round(per[d][0]/per[d][1]*100):0;
+    return '<div><span>D'+d+' · '+DOMS[d]+'</span><div class="wtrack"><i class="c'+d+'" style="width:'+p+'%"></i></div><span>'+per[d][0]+'/'+per[d][1]+' de '+totals[d]+'</span></div>';
+  }).join("");
+}
+$("resetquiz").addEventListener("click",function(){state.seen={};save();nextQ()});
+filterChips($("quizchips"),"quizDom",nextQ);
+nextQ();
+
+/* Navegación por hash */
+var VIEWS=["plan","temas","tarjetas","simulacro","repaso"];
+function show(v){
+  if(VIEWS.indexOf(v)<0)v="plan";
+  VIEWS.forEach(function(x){$("v-"+x).hidden=x!==v});
+  [].forEach.call(document.querySelectorAll(".tabrow button"),function(b){b.setAttribute("aria-selected",b.getAttribute("data-v")===v)});
+}
+document.querySelector(".tabrow").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
+  var v=b.getAttribute("data-v");show(v);try{location.hash=v}catch(err){}
+  window.scrollTo(0,0);
+});
+window.addEventListener("hashchange",function(){show(location.hash.slice(1))});
+show(location.hash.slice(1));
+})();
+</script>
+
+</body>
+</html>
