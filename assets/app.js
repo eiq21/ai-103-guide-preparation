@@ -1,7 +1,7 @@
 (function(){
 "use strict";
 var CLAVE="ai103-guia-v2";
-var est={hechas:{},resp:{},ruta:5};
+var est={hechas:{},ruta:5};
 try{var g=localStorage.getItem(CLAVE);if(g){var o=JSON.parse(g);for(var k in o)est[k]=o[k]}}catch(e){}
 function guardar(){try{localStorage.setItem(CLAVE,JSON.stringify(est))}catch(e){}}
 function $(s){return document.querySelector(s)}
@@ -10,8 +10,6 @@ var app=$("#app");
 
 var LEC=[];
 MODULOS.forEach(function(m){m.lecciones.forEach(function(l,i){l.id=m.n+"-"+(i+1);l.num=m.n+"."+(i+1);l.mod=m;l.min+=(m.n===3?40:25);LEC.push(l)})});
-var AVISO_LECCION={};
-LEC.forEach(function(l){l.ej.forEach(function(i){AVISO_LECCION[i]=l})});
 function siguientePendiente(){for(var i=0;i<LEC.length;i++)if(!est.hechas[LEC[i].id])return LEC[i];return null}
 function cuentaHechas(){return LEC.filter(function(l){return est.hechas[l.id]}).length}
 function barra(){$("#prog").textContent=cuentaHechas()+"/"+LEC.length+" lecciones"}
@@ -35,37 +33,11 @@ function inicio(){
    (sig?'<a class="btn pri" href="#/lesson/'+sig.id+'">'+(iniciado?"Continuar: ":"Comenzar: ")+sig.num+' '+sig.t+'</a>':'<a class="btn pri" href="#/mock-exam">Hacer el simulacro</a>')+
    '<a class="btn" href="#index">Ver índice</a></div></section>'+
   '<section class="pad sec"><span class="secn">§00</span><h2>Cómo funciona.</h2><div class="stack"><p class="lead">Todas las lecciones siguen el mismo orden. A lo largo del curso se construye una solución para Contoso Seguros, una aseguradora ficticia.</p>'+
-   '<div class="steps4"><div><b>1. Concepto</b><small>Lo esencial, con un esquema.</small></div><div><b>2. A fondo</b><small>Detalles, comparaciones y código.</small></div><div><b>3. Ejemplo y tropiezos</b><small>El tema aplicado al caso y errores comunes.</small></div><div><b>4. Preguntas</b><small>Ejercicios y nivel examen, con explicación.</small></div></div></div></section>'+
+   '<div class="steps4"><div><b>1. Concepto</b><small>Lo esencial, con un esquema.</small></div><div><b>2. A fondo</b><small>Detalles, comparaciones y código.</small></div><div><b>3. Ejemplo y tropiezos</b><small>El tema aplicado al caso y errores comunes.</small></div><div><b>4. Preguntas</b><small>Nivel examen, con explicación y fuente.</small></div></div></div></section>'+
   '<section class="pad sec"><span class="secn">§01</span><h2>Qué evalúa el examen.</h2><div class="stack"><p class="lead">Dos dominios concentran entre 55 y 65 % del examen, por eso los módulos 1 y 2 tienen mayor duración. Negro: peso mínimo. Amarillo: peso máximo.</p><div>'+pesos+'</div></div></section>'+
   '<section class="pad sec"><span class="secn">§02</span><h2>Elige tu ruta.</h2><div class="stack"><div class="switch" style="justify-self:start"><button data-ruta="4" aria-pressed="'+(est.ruta===4)+'">4 días</button><button data-ruta="5" aria-pressed="'+(est.ruta===5)+'">5 días</button></div><div class="route">'+ruta+'</div><p class="note">Con menos tiempo disponible, conviene priorizar Concepto, Tropiezos y Preguntas nivel examen, y dejar A fondo para los temas con más errores.</p></div></section>'+
   '<section class="pad sec" id="index"><span class="secn">§03</span><h2>Índice.</h2><div class="stack">'+indice+'</div></section>'+
   '<section class="pad sec"><span class="secn">§04</span><h2>Práctica final.</h2><div class="grid2"><a class="linkcard" href="#/mock-exam"><b>Examen de práctica</b><span>Preguntas de varios tipos, caso de estudio y 120 minutos.</span></a><a class="linkcard" href="#/flashcards"><b>Tarjetas</b><span>'+TARJETAS.length+' conceptos clave para repasar.</span></a><a class="linkcard" href="#/exam-day"><b>Día del examen</b><span>Condiciones, gestión del tiempo y resumen.</span></a></div></section>';
-}
-
-/* Ejercicio */
-function pintarPregunta(el,idx,n){
-  var q=PREGUNTAS[idx],multi=q[3].length>1,sel=[],fin=false;
-  var orden=q[2].map(function(_,i){return i}).sort(function(){return Math.random()-.5});
-  function acierto(){return sel.length===q[3].length&&q[3].every(function(v){return sel.indexOf(v)>=0})}
-  function pintar(){
-    var h='<div class="qb"><span class="qn">ejercicio '+n+(multi?" · seleccione 2":"")+'</span><p class="qt">'+esc(q[1])+'</p><div class="opts">'+
-     orden.map(function(o,i){var c="opt";if(fin){if(q[3].indexOf(o)>=0)c+=" ok";else if(sel.indexOf(o)>=0)c+=" no"}
-      return '<button class="'+c+'" data-o="'+o+'" aria-pressed="'+(sel.indexOf(o)>=0)+'"'+(fin?" disabled":"")+'><span>'+"ABCD".charAt(i)+'</span><span>'+esc(q[2][o])+'</span></button>'}).join("")+'</div>';
-    if(multi&&!fin)h+='<div><button class="btn" data-c'+(sel.length===2?"":" disabled")+'>Comprobar</button></div>';
-    if(fin)h+='<p class="why"><b>'+(acierto()?"Correcto.":"Incorrecto.")+'</b> '+esc(q[4])+'</p>';
-    el.innerHTML=h+'</div>';
-  }
-  function cerrar(){fin=true;est.resp[idx]=acierto();guardar();pintar()}
-  el.addEventListener("click",function(e){
-    if(fin)return;
-    if(e.target.closest("[data-c]")){cerrar();return}
-    var b=e.target.closest("[data-o]");if(!b)return;
-    var o=+b.getAttribute("data-o");
-    if(!multi){sel=[o];cerrar();return}
-    var i=sel.indexOf(o);if(i>=0)sel.splice(i,1);else if(sel.length<2)sel.push(o);
-    pintar();
-  });
-  pintar();
 }
 
 /* Lección */
@@ -82,15 +54,12 @@ function leccion(id){
    secs+
    '<h2><small>§'+(n=3)+'</small>Ejemplo: Contoso Seguros</h2><div class="case">'+l.ejemplo+'</div>'+
    '<h2><small>§4</small>Tropiezos frecuentes</h2><div class="pit"><ul>'+l.tropiezos.map(function(t){return '<li>'+t+'</li>'}).join("")+'</ul></div>'+
-   '<h2><small>§5</small>Comprueba lo aprendido</h2><div class="stack" id="ej"></div>'+
+   '<h2><small>§5</small>Preguntas nivel examen</h2><p>Estas preguntas siguen el formato de una certificación: escenario, restricciones y opciones plausibles.</p><div class="stack" id="exq"></div>'+
    '<div class="lab"><b>Práctica:</b> '+l.practica+'</div>'+
-   (ex.preguntas.length?'<h2><small>§6</small>Preguntas nivel examen</h2><p>Estas preguntas siguen el formato de una certificación: escenario, restricciones y opciones plausibles.</p><div class="stack" id="exq"></div>':'')+
-   '<h2><small>§7</small>Para profundizar</h2><ul>'+docs+'</ul>'+
+   '<h2><small>§6</small>Para profundizar</h2><ul>'+docs+'</ul>'+
    '<div class="done"><button class="btn pri" id="hecha">'+(est.hechas[l.id]?"Lección completada ✓":"Marcar como completada")+'</button></div></div></article>'+
    '<nav class="pn">'+(ant?'<a href="#/lesson/'+ant.id+'"><small>← anterior</small>'+ant.num+' '+ant.t+'</a>':'<a href="#/"><small>← inicio</small>Portada</a>')+
    (sig?'<a href="#/lesson/'+sig.id+'"><small>siguiente →</small>'+sig.num+' '+sig.t+'</a>':'<a href="#/mock-exam"><small>siguiente →</small>Simulacro</a>')+'</nav>';
-  var cont=$("#ej");
-  l.ej.forEach(function(idx,j){var d=document.createElement("div");cont.appendChild(d);pintarPregunta(d,idx,j+1)});
   var cx=$("#exq");if(cx)ex.preguntas.forEach(function(q,j){var d=document.createElement("div");cx.appendChild(d);EX.monta(d,q,{modo:"practica",rotulo:"pregunta "+(j+1)})});
   $("#hecha").addEventListener("click",function(){
     est.hechas[l.id]=!est.hechas[l.id];guardar();barra();
