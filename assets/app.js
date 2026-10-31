@@ -28,18 +28,18 @@ function inicio(){
   var ruta=RUTAS[est.ruta].map(function(r){return '<div><b>'+r[0]+'</b><span>'+r[1]+'</span><span>'+r[2]+'</span></div>'}).join("");
   var indice=MODULOS.map(function(m){
     return '<div class="mod"><div class="modh"><h3>Módulo '+m.n+' · '+m.t+'</h3><span>'+m.h+'</span><p>'+m.d+'</p></div>'+
-     m.lecciones.map(function(l){return '<a class="les" href="#/leccion/'+l.id+'"><span class="num">'+l.num+'</span><span>'+l.t+'</span><span class="tm">'+l.min+' min</span><span class="ok">'+(est.hechas[l.id]?"✓":"")+'</span></a>'}).join("")+'</div>';
+     m.lecciones.map(function(l){return '<a class="les" href="#/lesson/'+l.id+'"><span class="num">'+l.num+'</span><span>'+l.t+'</span><span class="tm">'+l.min+' min</span><span class="ok">'+(est.hechas[l.id]?"✓":"")+'</span></a>'}).join("")+'</div>';
   }).join("");
   app.innerHTML=
   '<section class="pad hero"><p class="tagv">// exam AI-103 · developing AI apps and agents on Azure</p><h1>Guía de preparación <mark>AI-103</mark></h1><p class="lead">Un curso breve para preparar el examen en 4 o 5 días. Cada lección explica un tema, lo aplica a un caso real y termina con ejercicios.</p><div class="cta">'+
-   (sig?'<a class="btn pri" href="#/leccion/'+sig.id+'">'+(iniciado?"Continuar: ":"Comenzar: ")+sig.num+' '+sig.t+'</a>':'<a class="btn pri" href="#/simulacro">Hacer el simulacro</a>')+
-   '<a class="btn" href="#indice">Ver índice</a></div></section>'+
+   (sig?'<a class="btn pri" href="#/lesson/'+sig.id+'">'+(iniciado?"Continuar: ":"Comenzar: ")+sig.num+' '+sig.t+'</a>':'<a class="btn pri" href="#/mock-exam">Hacer el simulacro</a>')+
+   '<a class="btn" href="#index">Ver índice</a></div></section>'+
   '<section class="pad sec"><span class="secn">§00</span><h2>Cómo funciona.</h2><div class="stack"><p class="lead">Todas las lecciones siguen el mismo orden. A lo largo del curso se construye una solución para Contoso Seguros, una aseguradora ficticia.</p>'+
    '<div class="steps4"><div><b>1. Concepto</b><small>Lo esencial, con un esquema.</small></div><div><b>2. Ejemplo</b><small>El tema aplicado al caso.</small></div><div><b>3. Tropiezos</b><small>Errores que el examen aprovecha.</small></div><div><b>4. Ahora prueba</b><small>Ejercicios con explicación.</small></div></div></div></section>'+
   '<section class="pad sec"><span class="secn">§01</span><h2>Qué evalúa el examen.</h2><div class="stack"><p class="lead">Dos dominios concentran entre 55 y 65 % del examen, por eso los módulos 1 y 2 tienen mayor duración. Negro: peso mínimo. Amarillo: peso máximo.</p><div>'+pesos+'</div></div></section>'+
   '<section class="pad sec"><span class="secn">§02</span><h2>Elige tu ruta.</h2><div class="stack"><div class="switch" style="justify-self:start"><button data-ruta="4" aria-pressed="'+(est.ruta===4)+'">4 días</button><button data-ruta="5" aria-pressed="'+(est.ruta===5)+'">5 días</button></div><div class="route">'+ruta+'</div></div></section>'+
-  '<section class="pad sec" id="indice"><span class="secn">§03</span><h2>Índice.</h2><div class="stack">'+indice+'</div></section>'+
-  '<section class="pad sec"><span class="secn">§04</span><h2>Práctica final.</h2><div class="grid2"><a class="linkcard" href="#/simulacro"><b>Simulacro</b><span>30 preguntas según el peso de cada dominio.</span></a><a class="linkcard" href="#/tarjetas"><b>Tarjetas</b><span>'+TARJETAS.length+' conceptos clave para repasar.</span></a><a class="linkcard" href="#/examen"><b>Día del examen</b><span>Condiciones, gestión del tiempo y resumen.</span></a></div></section>';
+  '<section class="pad sec" id="index"><span class="secn">§03</span><h2>Índice.</h2><div class="stack">'+indice+'</div></section>'+
+  '<section class="pad sec"><span class="secn">§04</span><h2>Práctica final.</h2><div class="grid2"><a class="linkcard" href="#/mock-exam"><b>Simulacro</b><span>30 preguntas según el peso de cada dominio.</span></a><a class="linkcard" href="#/flashcards"><b>Tarjetas</b><span>'+TARJETAS.length+' conceptos clave para repasar.</span></a><a class="linkcard" href="#/exam-day"><b>Día del examen</b><span>Condiciones, gestión del tiempo y resumen.</span></a></div></section>';
 }
 
 /* Ejercicio */
@@ -74,7 +74,7 @@ function leccion(id){
   if(!l){location.hash="#/";return}
   var ant=LEC[i-1],sig=LEC[i+1];
   var docs=l.docs.map(function(d){return '<li><a href="'+DOC+d[1]+'" target="_blank" rel="noopener">'+d[0]+'</a></li>'}).join("");
-  app.innerHTML='<article class="pad"><div class="meta"><a href="#indice">← índice</a><span>/</span><span>módulo '+l.mod.n+': '+l.mod.t+'</span><span>/</span><span>'+l.num+'</span><span>/</span><span>'+l.min+' min</span></div>'+
+  app.innerHTML='<article class="pad"><div class="meta"><a href="#index">← índice</a><span>/</span><span>módulo '+l.mod.n+': '+l.mod.t+'</span><span>/</span><span>'+l.num+'</span><span>/</span><span>'+l.min+' min</span></div>'+
    '<div class="prose"><h1 class="les-t">'+l.t+'</h1><p class="obj"><b>Objetivo:</b> '+l.obj+'</p>'+
    '<h2><small>§1</small>Concepto</h2>'+l.html+
    '<h2><small>§2</small>Ejemplo: Contoso Seguros</h2><div class="case">'+l.ejemplo+'</div>'+
@@ -83,8 +83,8 @@ function leccion(id){
    '<div class="lab"><b>Práctica:</b> '+l.practica+'</div>'+
    '<h2><small>§5</small>Para profundizar</h2><ul>'+docs+'</ul>'+
    '<div class="done"><button class="btn pri" id="hecha">'+(est.hechas[l.id]?"Lección completada ✓":"Marcar como completada")+'</button></div></div></article>'+
-   '<nav class="pn">'+(ant?'<a href="#/leccion/'+ant.id+'"><small>← anterior</small>'+ant.num+' '+ant.t+'</a>':'<a href="#/"><small>← inicio</small>Portada</a>')+
-   (sig?'<a href="#/leccion/'+sig.id+'"><small>siguiente →</small>'+sig.num+' '+sig.t+'</a>':'<a href="#/simulacro"><small>siguiente →</small>Simulacro</a>')+'</nav>';
+   '<nav class="pn">'+(ant?'<a href="#/lesson/'+ant.id+'"><small>← anterior</small>'+ant.num+' '+ant.t+'</a>':'<a href="#/"><small>← inicio</small>Portada</a>')+
+   (sig?'<a href="#/lesson/'+sig.id+'"><small>siguiente →</small>'+sig.num+' '+sig.t+'</a>':'<a href="#/mock-exam"><small>siguiente →</small>Simulacro</a>')+'</nav>';
   var cont=$("#ej");
   l.ej.forEach(function(idx,j){var d=document.createElement("div");cont.appendChild(d);pintarPregunta(d,idx,j+1)});
   $("#hecha").addEventListener("click",function(){
@@ -111,8 +111,8 @@ function simulacro(){
       return [d.t,o+"/"+t.length,Math.round(o/t.length*100)+" %"]});
     app.innerHTML='<section class="pad"><div class="prose"><span class="secn">resultado</span><p class="score">'+pc+' %</p><p>'+ok+' de '+lista.length+' respuestas correctas. La meta recomendada es 80 %. Este valor no predice el puntaje oficial.</p>'+
      tabla(["Dominio","Aciertos","%"],porD)+
-     (fall.length?'<h2>Para reforzar</h2><div class="stack">'+fall.map(function(i){var l=AVISO_LECCION[i];return '<div class="qb"><p class="qt">'+esc(PREGUNTAS[i][1])+'</p><p>Respuesta: <b>'+PREGUNTAS[i][3].map(function(o){return esc(PREGUNTAS[i][2][o])}).join(" + ")+'</b></p><p class="why">'+esc(PREGUNTAS[i][4])+'</p>'+(l?'<a href="#/leccion/'+l.id+'">Repasar '+l.num+' '+l.t+'</a>':"")+'</div>'}).join("")+'</div>':"")+
-     '<div class="cta"><a class="btn pri" href="#/simulacro" id="otro">Nuevo simulacro</a><a class="btn" href="#/">Volver al inicio</a></div></div></section>';
+     (fall.length?'<h2>Para reforzar</h2><div class="stack">'+fall.map(function(i){var l=AVISO_LECCION[i];return '<div class="qb"><p class="qt">'+esc(PREGUNTAS[i][1])+'</p><p>Respuesta: <b>'+PREGUNTAS[i][3].map(function(o){return esc(PREGUNTAS[i][2][o])}).join(" + ")+'</b></p><p class="why">'+esc(PREGUNTAS[i][4])+'</p>'+(l?'<a href="#/lesson/'+l.id+'">Repasar '+l.num+' '+l.t+'</a>':"")+'</div>'}).join("")+'</div>':"")+
+     '<div class="cta"><a class="btn pri" href="#/mock-exam" id="otro">Nuevo simulacro</a><a class="btn" href="#/">Volver al inicio</a></div></div></section>';
     $("#otro").addEventListener("click",function(e){e.preventDefault();simulacro()});
   }
   function pintar(){
@@ -174,11 +174,11 @@ function rutas(){
   var nav=document.querySelectorAll(".nav a");
   nav.forEach(function(a){a.classList.toggle("on",a.getAttribute("href")===h)});
   barra();
-  if((m=h.match(/^#\/leccion\/(\d-\d)$/))){leccion(m[1]);window.scrollTo(0,0)}
-  else if(h==="#/simulacro"){simulacro();window.scrollTo(0,0)}
-  else if(h==="#/tarjetas"){tarjetasVista();window.scrollTo(0,0)}
-  else if(h==="#/examen"){examen();window.scrollTo(0,0)}
-  else if(h==="#indice"){inicio();var t=$("#indice");if(t)t.scrollIntoView()}
+  if((m=h.match(/^#\/lesson\/(\d-\d)$/))){leccion(m[1]);window.scrollTo(0,0)}
+  else if(h==="#/mock-exam"){simulacro();window.scrollTo(0,0)}
+  else if(h==="#/flashcards"){tarjetasVista();window.scrollTo(0,0)}
+  else if(h==="#/exam-day"){examen();window.scrollTo(0,0)}
+  else if(h==="#index"){inicio();var t=$("#index");if(t)t.scrollIntoView()}
   else{inicio();window.scrollTo(0,0)}
 }
 app.addEventListener("click",function(e){
