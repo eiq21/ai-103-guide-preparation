@@ -24,7 +24,7 @@ function urlp(partes){
 }
 
 /* Lección nueva */
-MODULOS[0].lecciones.push({t:"Mapa de endpoints",min:20,
+MODULOS[0].lecciones.push({t:"Endpoints de Foundry",min:20,
   obj:"Identificar qué endpoint corresponde a cada tarea y cómo autenticarse.",
   html:'<p>Un recurso de Foundry no tiene una sola dirección. Expone varios endpoints porque atiende necesidades distintas. La clave es preguntar <b>qué se quiere hacer</b>: usar un proyecto, llamar a un modelo con API OpenAI, usar una herramienta especializada o administrar el recurso.</p>',
   ejemplo:'<p>Contoso Seguros tiene cuatro necesidades:</p>'+tabla(["Necesidad","Endpoint"],[["Agente de siniestros con tools","Proyecto: <code>/api/projects/siniestros</code>"],["Embeddings para indexar pólizas","OpenAI: <code>/openai/v1</code>"],["Transcribir llamadas","Foundry Tools: Speech"],["Crear un despliegue desde Bicep","Plano de control: Azure Resource Manager"]])+'<p>Las cuatro pertenecen al mismo recurso, salvo Azure AI Search, que es un servicio aparte con su propio endpoint.</p>',
@@ -121,3 +121,34 @@ var PANORAMAS={
 4:{t:"Del documento a la respuesta",p:[["Entender","Anatomía de RAG","4-1"],["Buscar","Tipos de búsqueda","4-2"],["Enriquecer","Indexer y skills","4-3"],["Razonar","Agentic retrieval","4-4"],["Extraer","Content Understanding","4-5"]]},
 5:{t:"Una decisión por tipo de contenido",p:[["Imagen","Generar y editar","5-1"],["Video","Sora 2","5-2"],["Multimodal","Entender medios","5-3"],["Texto","Analizar y traducir","5-4"],["Voz","STT, TTS y agentes","5-5"]]}
 };
+
+/* Ubicación de cada esquema dentro de la lectura: "concepto" o el título de una sección A fondo. */
+MAPAS["2-1"].unshift({t:"Qué endpoint usar según la tarea",html:MAPAS["1-6"][0].html});
+var UBICA={
+"1-1":["concepto","Qué se comparte y qué se aísla"],
+"1-2":["concepto","Serverless, managed compute e instant access"],
+"1-3":["Plano de control y plano de datos","Alcances","Identidades de ejecución"],
+"1-4":["Tres superficies de red","Provisionar standard setup"],
+"1-5":["Cuota, capacidad y límite efectivo","concepto"],
+"1-6":["concepto","concepto","concepto","concepto"],
+"2-1":["Elegir SDK y endpoint","Elegir SDK y endpoint","Dos formas de ejecutar un turno"],
+"2-2":["Reglas de structured outputs","concepto","Reflexión y autocrítica"],
+"2-3":["Matriz de decisión ampliada","concepto"],
+"2-4":["concepto","Bucle de function calling"],
+"2-5":["Tres formas de llevar el contexto","Memory (preview): configuración real","Memory (preview): configuración real"],
+"2-6":["Builders y señales de decisión","Salvaguardas de autonomía y durabilidad"],
+"3-1":["Gobernar agentes: supervisión, restricciones y tools","concepto","Matriz de aplicabilidad: modelos frente a agentes"],
+"3-2":["concepto","Arquitectura de una evaluación en la nube","concepto"],
+"3-3":["Dos capas de telemetría","Integración con CI/CD"],
+"4-1":["concepto","Diagnóstico de fallas de grounding"],
+"4-2":["RRF por dentro","concepto"],
+"4-3":["Cuatro etapas y tres mapeos","Elegir la skill de extracción"],
+"4-4":["Reasoning effort (preview)","Knowledge sources e índice"],
+"4-5":["concepto","Anatomía de un custom analyzer","Content Understanding, Document Intelligence o modelo propio"],
+"5-1":["Edición con máscara, por prompt y con referencias"],
+"5-2":["Medios de referencia y edición de videos generados","Medios de referencia y edición de videos generados"],
+"5-3":["Captions, alt text y preguntas sobre evidencia visual","Filtros, inyección por imagen y reglas visuales"],
+"5-4":["Herramienta especializada o modelo de lenguaje","concepto"],
+"5-5":["Configuración de la sesión y personalización","Rutas de voz para un agente","Ciclo de custom speech"]
+};
+Object.keys(MAPAS).forEach(function(id){MAPAS[id].forEach(function(m,i){m.en=UBICA[id][i]})});

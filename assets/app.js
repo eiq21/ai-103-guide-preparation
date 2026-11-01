@@ -26,31 +26,25 @@ function inicio(){
   var ruta=RUTAS[est.ruta].map(function(r){return '<div><b>'+r[0]+'</b><span>'+r[1]+'</span><span>'+r[2]+'</span></div>'}).join("");
   var indice=MODULOS.map(function(m){
     return '<div class="mod"><div class="modh"><h3>Módulo '+m.n+' · '+m.t+'</h3><span>'+m.h+'</span><p>'+m.d+'</p></div>'+
-     m.lecciones.map(function(l){return '<a class="les" href="#/lesson/'+l.id+'"><span class="num">'+l.num+'</span><span>'+l.t+'</span><span class="tm">'+l.min+' min</span><span class="ok">'+(est.hechas[l.id]?"✓":"")+'</span></a>'}).join("")+'<a class="les modmap" href="#/maps/'+m.n+'"><span class="num">▦</span><span>Mapas del módulo '+m.n+'</span></a></div>';
+     m.lecciones.map(function(l){return '<a class="les" href="#/lesson/'+l.id+'"><span class="num">'+l.num+'</span><span>'+l.t+'</span><span class="tm">'+l.min+' min</span><span class="ok">'+(est.hechas[l.id]?"✓":"")+'</span></a>'}).join("")+'</div>';
   }).join("");
   app.innerHTML=
   '<section class="pad hero"><p class="tagv">// exam AI-103 · developing AI apps and agents on Azure</p><h1>Guía de preparación <mark>AI-103</mark></h1><p class="lead">Un curso breve para preparar el examen en 4 o 5 días. Cada lección profundiza en un tema, lo aplica a un caso práctico y termina con preguntas de nivel examen.</p><div class="cta">'+
    (sig?'<a class="btn pri" href="#/lesson/'+sig.id+'">'+(iniciado?"Continuar: ":"Comenzar: ")+sig.num+' '+sig.t+'</a>':'<a class="btn pri" href="#/mock-exam">Hacer el simulacro</a>')+
    '<a class="btn" href="#index">Ver índice</a></div></section>'+
   '<section class="pad sec"><span class="secn">§00</span><h2>Cómo funciona.</h2><div class="stack"><p class="lead">Todas las lecciones siguen el mismo orden. A lo largo del curso se construye una solución para Contoso Seguros, una aseguradora ficticia.</p>'+
-   '<div class="steps4"><div><b>1. Concepto</b><small>Lo esencial, con un esquema.</small></div><div><b>2. Mapa y detalle</b><small>Diagramas, comparaciones y código.</small></div><div><b>3. Ejemplo y tropiezos</b><small>El tema aplicado al caso y errores comunes.</small></div><div><b>4. Preguntas</b><small>Nivel examen, con explicación y fuente.</small></div></div></div></section>'+
+   '<div class="steps4"><div><b>1. Concepto</b><small>La idea central, con su esquema.</small></div><div><b>2. A fondo</b><small>Esquemas, comparaciones y código.</small></div><div><b>3. Ejemplo y tropiezos</b><small>El tema aplicado al caso y errores comunes.</small></div><div><b>4. Preguntas</b><small>Nivel examen, con explicación y fuente.</small></div></div></div></section>'+
   '<section class="pad sec"><span class="secn">§01</span><h2>Qué evalúa el examen.</h2><div class="stack"><p class="lead">Dos dominios concentran entre 55 y 65 % del examen, por eso los módulos 1 y 2 tienen mayor duración. Negro: peso mínimo. Amarillo: peso máximo.</p><div>'+pesos+'</div></div></section>'+
   '<section class="pad sec"><span class="secn">§02</span><h2>Elige tu ruta.</h2><div class="stack"><div class="switch" style="justify-self:start"><button data-ruta="4" aria-pressed="'+(est.ruta===4)+'">4 días</button><button data-ruta="5" aria-pressed="'+(est.ruta===5)+'">5 días</button></div><div class="route">'+ruta+'</div><p class="note">Con menos tiempo disponible, conviene priorizar Concepto, Tropiezos y Preguntas nivel examen, y dejar A fondo para los temas con más errores.</p></div></section>'+
   '<section class="pad sec" id="index"><span class="secn">§03</span><h2>Índice.</h2><div class="stack">'+indice+'</div></section>'+
-  '<section class="pad sec"><span class="secn">§04</span><h2>Práctica final.</h2><div class="grid2"><a class="linkcard" href="#/mock-exam"><b>Examen de práctica</b><span>Preguntas de varios tipos, caso de estudio y 120 minutos.</span></a><a class="linkcard" href="#/maps"><b>Mapas por módulo</b><span>Panoramas y diagramas de cada módulo.</span></a><a class="linkcard" href="#/flashcards"><b>Tarjetas</b><span>'+TARJETAS.length+' conceptos clave para repasar.</span></a><a class="linkcard" href="#/exam-day"><b>Día del examen</b><span>Condiciones, gestión del tiempo y resumen.</span></a></div></section>';
+  '<section class="pad sec"><span class="secn">§04</span><h2>Práctica final.</h2><div class="grid2"><a class="linkcard" href="#/mock-exam"><b>Examen de práctica</b><span>Preguntas de varios tipos, caso de estudio y 120 minutos.</span></a><a class="linkcard" href="#/flashcards"><b>Tarjetas</b><span>'+TARJETAS.length+' conceptos clave para repasar.</span></a><a class="linkcard" href="#/exam-day"><b>Día del examen</b><span>Condiciones, gestión del tiempo y resumen.</span></a></div></section>';
 }
 
-/* Mapas */
-function bloqueMapa(m){return '<div class="mapa"><div class="mapah"><b>'+m.t+'</b><span>'+m.tipo+'</span></div>'+m.html+'</div>'}
-function mapasHtml(id,n){var ms=MAPAS[id];if(!ms)return "";return '<h2><small>§'+n+'</small>Mapa visual</h2>'+ms.map(bloqueMapa).join("")}
-function panorama(n){var p=PANORAMAS[n];
-  return '<div class="mapa"><div class="mapah"><b>'+p.t+'</b><span>panorama del módulo</span></div><ol class="etapas pano">'+p.p.map(function(x){return '<li><a href="#/lesson/'+x[2]+'"><b>'+x[0]+'</b><span>'+x[1]+'</span></a></li>'}).join("")+'</ol></div>'}
-function mapas(n){
-  var mods=n?MODULOS.filter(function(m){return m.n===n}):MODULOS;
-  var filtros='<div class="chips">'+[0,1,2,3,4,5].map(function(k){return '<a class="chipa'+((n||0)===k?" on":"")+'" href="#/maps'+(k?"/"+k:"")+'">'+(k?"Módulo "+k:"Todos")+'</a>'}).join("")+'</div>';
-  app.innerHTML='<section class="pad"><div class="prose"><span class="secn">repaso visual</span><h1 class="les-t">Mapas por módulo</h1><p class="lead">Cada módulo empieza con su panorama. Después aparecen sus capas, niveles, etapas, decisiones y clasificaciones.</p>'+filtros+
-   mods.map(function(m){return '<h2><small>módulo '+m.n+'</small>'+m.t+'</h2>'+panorama(m.n)+m.lecciones.map(function(l){return (MAPAS[l.id]||[]).map(function(x){return bloqueMapa({t:l.num+' · '+x.t,tipo:x.tipo,html:x.html})}).join("")}).join("")}).join("")+'</div></section>';
-}
+/* Esquemas integrados en la lectura */
+function esquema(m){return '<figure class="esq"><figcaption>esquema · '+m.t+'</figcaption>'+m.html+'</figure>'}
+function esquemasEn(id,lugar){return (MAPAS[id]||[]).filter(function(m){return m.en===lugar}).map(esquema).join("")}
+function recorrido(l){var p=PANORAMAS[l.mod.n];
+  return '<nav class="ruta" aria-label="Recorrido del módulo">'+p.p.map(function(x){return '<a href="#/lesson/'+x[2]+'"'+(x[2]===l.id?' class="on" aria-current="step"':'')+'>'+x[0]+'</a>'}).join("")+'</nav>'}
 
 /* Lección */
 function leccion(id){
@@ -58,18 +52,17 @@ function leccion(id){
   if(!l){location.hash="#/";return}
   var ant=LEC[i-1],sig=LEC[i+1];
   var ex=EXTRA[l.id]||{secciones:[],preguntas:[]};
-  var secs=ex.secciones.length?'<h2><small>§3</small>A fondo</h2>'+ex.secciones.map(function(x){return '<h3>'+x.t+'</h3>'+x.html}).join(""):'';
+  var secs=ex.secciones.length?'<h2><small>§2</small>A fondo</h2>'+ex.secciones.map(function(x){return '<h3>'+x.t+'</h3>'+x.html+esquemasEn(l.id,x.t)}).join(""):'';
   var docs=l.docs.map(function(d){return '<li><a href="'+DOC+d[1]+'" target="_blank" rel="noopener">'+d[0]+'</a></li>'}).join("");
   app.innerHTML='<article class="pad"><div class="meta"><a href="#index">← índice</a><span>/</span><span>módulo '+l.mod.n+': '+l.mod.t+'</span><span>/</span><span>'+l.num+'</span><span>/</span><span>'+l.min+' min</span></div>'+
-   '<div class="prose"><h1 class="les-t">'+l.t+'</h1><p class="obj"><b>Objetivo:</b> '+l.obj+'</p>'+
-   '<h2><small>§1</small>Concepto</h2>'+l.html+
-   mapasHtml(l.id,2)+
+   '<div class="prose">'+recorrido(l)+'<h1 class="les-t">'+l.t+'</h1><p class="obj"><b>Objetivo:</b> '+l.obj+'</p>'+
+   '<h2><small>§1</small>Concepto</h2>'+l.html+esquemasEn(l.id,"concepto")+
    secs+
-   '<h2><small>§4</small>Ejemplo: Contoso Seguros</h2><div class="case">'+l.ejemplo+'</div>'+
-   '<h2><small>§5</small>Tropiezos frecuentes</h2><div class="pit"><ul>'+l.tropiezos.map(function(t){return '<li>'+t+'</li>'}).join("")+'</ul></div>'+
-   '<h2><small>§6</small>Preguntas nivel examen</h2><p>Estas preguntas siguen el formato de una certificación: escenario, restricciones y opciones plausibles.</p><div class="stack" id="exq"></div>'+
+   '<h2><small>§3</small>Ejemplo: Contoso Seguros</h2><div class="case">'+l.ejemplo+'</div>'+
+   '<h2><small>§4</small>Tropiezos frecuentes</h2><div class="pit"><ul>'+l.tropiezos.map(function(t){return '<li>'+t+'</li>'}).join("")+'</ul></div>'+
+   '<h2><small>§5</small>Preguntas nivel examen</h2><p>Estas preguntas siguen el formato de una certificación: escenario, restricciones y opciones plausibles.</p><div class="stack" id="exq"></div>'+
    '<div class="lab"><b>Práctica:</b> '+l.practica+'</div>'+
-   '<h2><small>§7</small>Para profundizar</h2><ul>'+docs+'</ul>'+
+   '<h2><small>§6</small>Para profundizar</h2><ul>'+docs+'</ul>'+
    '<div class="done"><button class="btn pri" id="hecha">'+(est.hechas[l.id]?"Lección completada ✓":"Marcar como completada")+'</button></div></div></article>'+
    '<nav class="pn">'+(ant?'<a href="#/lesson/'+ant.id+'"><small>← anterior</small>'+ant.num+' '+ant.t+'</a>':'<a href="#/"><small>← inicio</small>Portada</a>')+
    (sig?'<a href="#/lesson/'+sig.id+'"><small>siguiente →</small>'+sig.num+' '+sig.t+'</a>':'<a href="#/mock-exam"><small>siguiente →</small>Simulacro</a>')+'</nav>';
@@ -181,7 +174,6 @@ function rutas(){
   else if(h==="#/mock-exam"){simulacro();window.scrollTo(0,0)}
   else if(h==="#/flashcards"){tarjetasVista();window.scrollTo(0,0)}
   else if(h==="#/exam-day"){examen();window.scrollTo(0,0)}
-  else if((m=h.match(/^#\/maps(?:\/(\d))?$/))){mapas(m[1]?+m[1]:0);window.scrollTo(0,0)}
   else if(h==="#index"){inicio();var t=$("#index");if(t)t.scrollIntoView()}
   else{inicio();window.scrollTo(0,0)}
 }
