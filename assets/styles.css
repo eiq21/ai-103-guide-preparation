@@ -228,6 +228,9 @@ pre.cod,.hl-ley{--c-kw:#b0226a;--c-cls:#005f8f;--c-fn:#8a5a00;--c-par:#b84a00;--
 /* Mapas visuales */
 .esq{margin:4px 0;display:grid;grid-template-columns:minmax(0,1fr);gap:8px;min-width:0}
 .esq figcaption{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.apertura{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;min-width:0;padding-left:18px;border-left:5px solid var(--hl);font-size:18px}
+.apertura-k{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.puente{font-weight:600}
 .analog{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;min-width:0;padding:16px 18px;background:var(--tint);border:1px solid var(--line);border-left-width:5px}
 .analog-k{font-family:var(--mono);font-size:12px;font-weight:600}
 .analog dl{margin:0;display:grid;grid-template-columns:minmax(0,1fr);border-top:1px solid var(--soft)}
