@@ -33,7 +33,7 @@ function inicio(){
    (sig?'<a class="btn pri" href="#/lesson/'+sig.id+'">'+(iniciado?"Continuar: ":"Comenzar: ")+sig.num+' '+sig.t+'</a>':'<a class="btn pri" href="#/mock-exam">Hacer el simulacro</a>')+
    '<a class="btn" href="#index">Ver índice</a></div></section>'+
   '<section class="pad sec"><span class="secn">§00</span><h2>Cómo funciona.</h2><div class="stack"><p class="lead">Todas las lecciones siguen el mismo orden. A lo largo del curso se construye una solución para Contoso Seguros, una aseguradora ficticia.</p>'+
-   '<div class="steps4"><div><b>1. Concepto</b><small>La idea central, con su esquema.</small></div><div><b>2. A fondo</b><small>Esquemas, comparaciones y código.</small></div><div><b>3. Ejemplo y tropiezos</b><small>El tema aplicado al caso y errores comunes.</small></div><div><b>4. Preguntas</b><small>Nivel examen, con explicación y fuente.</small></div></div></div></section>'+
+   '<div class="steps4"><div><b>1. Concepto</b><small>La idea central, con analogías y esquemas.</small></div><div><b>2. A fondo</b><small>Esquemas, comparaciones y código.</small></div><div><b>3. Ejemplo y tropiezos</b><small>El tema aplicado al caso y errores comunes.</small></div><div><b>4. Preguntas</b><small>Nivel examen, con explicación y fuente.</small></div></div></div></section>'+
   '<section class="pad sec"><span class="secn">§01</span><h2>Qué evalúa el examen.</h2><div class="stack"><p class="lead">Dos dominios concentran entre 55 y 65 % del examen, por eso los módulos 1 y 2 tienen mayor duración. Negro: peso mínimo. Amarillo: peso máximo.</p><div>'+pesos+'</div></div></section>'+
   '<section class="pad sec"><span class="secn">§02</span><h2>Elige tu ruta.</h2><div class="stack"><div class="switch" style="justify-self:start"><button data-ruta="4" aria-pressed="'+(est.ruta===4)+'">4 días</button><button data-ruta="5" aria-pressed="'+(est.ruta===5)+'">5 días</button></div><div class="route">'+ruta+'</div><p class="note">Con menos tiempo disponible, conviene priorizar Concepto, Tropiezos y Preguntas nivel examen, y dejar A fondo para los temas con más errores.</p></div></section>'+
   '<section class="pad sec" id="index"><span class="secn">§03</span><h2>Índice.</h2><div class="stack">'+indice+'</div></section>'+
@@ -43,6 +43,11 @@ function inicio(){
 /* Esquemas integrados en la lectura */
 function esquema(m){return '<figure class="esq"><figcaption>esquema · '+m.t+'</figcaption>'+m.html+'</figure>'}
 function esquemasEn(id,lugar){return (MAPAS[id]||[]).filter(function(m){return m.en===lugar}).map(esquema).join("")}
+function analogia(id,lugar){var a=ANALOGIAS[id];if(!a||a.en!==lugar)return "";
+  return '<aside class="analog"><p class="analog-k">analogía · '+a.t+'</p><p>'+a.txt+'</p><dl>'+a.eq.map(function(e){return '<div><dt>'+e[0]+'</dt><dd>'+e[1]+'</dd></div>'}).join("")+'</dl><p class="analog-lim"><b>Hasta dónde llega:</b> '+a.lim+'</p></aside>'}
+function refuerzos(id,lugar){return analogia(id,lugar)+esquemasEn(id,lugar)}
+function concepto(l){var a=ANALOGIAS[l.id];if(!a||!a.antes||a.en!=="concepto")return l.html+refuerzos(l.id,"concepto");
+  return l.html.replace(a.antes,function(m){return analogia(l.id,"concepto")+m})+esquemasEn(l.id,"concepto")}
 function recorrido(l){var p=PANORAMAS[l.mod.n];
   return '<nav class="ruta" aria-label="Recorrido del módulo">'+p.p.map(function(x){return '<a href="#/lesson/'+x[2]+'"'+(x[2]===l.id?' class="on" aria-current="step"':'')+'>'+x[0]+'</a>'}).join("")+'</nav>'}
 
@@ -52,11 +57,11 @@ function leccion(id){
   if(!l){location.hash="#/";return}
   var ant=LEC[i-1],sig=LEC[i+1];
   var ex=EXTRA[l.id]||{secciones:[],preguntas:[]};
-  var secs=ex.secciones.length?'<h2><small>§2</small>A fondo</h2>'+ex.secciones.map(function(x){return '<h3>'+x.t+'</h3>'+x.html+esquemasEn(l.id,x.t)}).join(""):'';
+  var secs=ex.secciones.length?'<h2><small>§2</small>A fondo</h2>'+ex.secciones.map(function(x){return '<h3>'+x.t+'</h3>'+x.html+refuerzos(l.id,x.t)}).join(""):'';
   var docs=l.docs.map(function(d){return '<li><a href="'+DOC+d[1]+'" target="_blank" rel="noopener">'+d[0]+'</a></li>'}).join("");
   app.innerHTML='<article class="pad"><div class="meta"><a href="#index">← índice</a><span>/</span><span>módulo '+l.mod.n+': '+l.mod.t+'</span><span>/</span><span>'+l.num+'</span><span>/</span><span>'+l.min+' min</span></div>'+
    '<div class="prose">'+recorrido(l)+'<h1 class="les-t">'+l.t+'</h1><p class="obj"><b>Objetivo:</b> '+l.obj+'</p>'+
-   '<h2><small>§1</small>Concepto</h2>'+l.html+esquemasEn(l.id,"concepto")+
+   '<h2><small>§1</small>Concepto</h2>'+concepto(l)+
    secs+
    '<h2><small>§3</small>Ejemplo: Contoso Seguros</h2><div class="case">'+l.ejemplo+'</div>'+
    '<h2><small>§4</small>Tropiezos frecuentes</h2><div class="pit"><ul>'+l.tropiezos.map(function(t){return '<li>'+t+'</li>'}).join("")+'</ul></div>'+
