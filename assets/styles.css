@@ -287,7 +287,7 @@ pre.cod,.hl-ley{--c-kw:#b0226a;--c-cls:#005f8f;--c-fn:#8a5a00;--c-par:#b84a00;--
 
 
 /* Resaltador de estudio: un color por función. */
-.sub{--c:255 210 0;color:inherit;padding:.16em .12em .04em;border-radius:.2em;-webkit-box-decoration-break:clone;box-decoration-break:clone;
+.sub{--c:255 210 0;color:inherit;padding:.07em .1em .02em;border-radius:.2em;-webkit-box-decoration-break:clone;box-decoration-break:clone;
   background:linear-gradient(180deg,rgb(var(--c)/.55),rgb(var(--c)/.55))}
 .sub-decision{--c:70 205 110}.sub-dato{--c:85 170 255}.sub-trampa{--c:255 95 150}
 .sub-off .prose .sub{background:none;padding:0}
