@@ -285,3 +285,12 @@ pre.cod,.hl-ley{--c-kw:#b0226a;--c-cls:#005f8f;--c-fn:#8a5a00;--c-par:#b84a00;--
   .nivs{grid-auto-flow:row;align-items:stretch}.nivs>div{min-height:0;margin-left:calc((var(--n) - 1)*12px)}
 }
 
+
+/* Resaltador de estudio: un color por función. */
+.sub{--c:255 210 0;color:inherit;padding:0 .12em;border-radius:.2em;-webkit-box-decoration-break:clone;box-decoration-break:clone;
+  background:linear-gradient(180deg,transparent 38%,rgb(var(--c)/.6) 38%,rgb(var(--c)/.6) 92%,transparent 92%)}
+.sub-decision{--c:70 205 110}.sub-dato{--c:85 170 255}.sub-trampa{--c:255 95 150}
+.sub-off .prose .sub{background:none;padding:0}
+.subbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;font-size:14px}
+.subley{display:flex;flex-wrap:wrap;gap:6px 12px}
+.sub-off .subley .sub{opacity:.45}
