@@ -6,7 +6,7 @@ Organizado en cinco módulos y 29 lecciones. Cada lección abre con una analogí
 
 El módulo 4 incluye un bloque de RAG a fondo: chunking y vectores, generación con grounding y citas, permisos por documento, y evaluación y optimización.
 
-Cada lección tiene dos ayudas de estudio. Un resaltador por colores marca las ideas clave, las reglas de decisión, los datos y las trampas. La *clase guiada con voz* recorre la lección sección por sección. Baja la página, resalta la sección y un profesor explica lo importante con voz neuronal, con una pausa entre secciones.
+Cada lección tiene dos ayudas de estudio. Un resaltador por colores marca las ideas clave, las reglas de decisión, los datos y las trampas. La *clase guiada con voz* recorre la lección sección por sección. Baja la página, resalta la sección y un profesor explica lo importante con voz neuronal, con una pausa entre secciones. Mientras habla, la barra inferior muestra subtítulos palabra por palabra y un señalador marca en la página la fila, el paso o el término que está explicando.
 
 Los guiones están en `assets/voz-datos.js`. Si cambias un guion, regenera el audio con `tools/generar-audio.py`; solo se generan los audios que cambiaron.
 
