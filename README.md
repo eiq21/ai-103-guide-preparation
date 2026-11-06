@@ -6,6 +6,8 @@ Organizado en cinco módulos y 29 lecciones. Cada lección abre con una analogí
 
 El módulo 4 incluye un bloque de RAG a fondo: chunking y vectores, generación con grounding y citas, permisos por documento, y evaluación y optimización.
 
+Cada lección tiene dos ayudas de estudio. Un resaltador por colores marca las ideas clave, las reglas de decisión, los datos y las trampas. El botón *Escuchar al profesor* reproduce una explicación hablada de dos a tres minutos con lo más preguntado. Usa la voz del navegador, así que la calidad depende de las voces instaladas.
+
 El contenido sigue el temario oficial publicado por Microsoft. Las preguntas son originales y no provienen del examen real. Este proyecto no está afiliado a Microsoft.
 
 El progreso se guarda únicamente en el navegador. Para uso local, abra `index.html`.
