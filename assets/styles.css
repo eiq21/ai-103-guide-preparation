@@ -294,16 +294,24 @@ pre.cod,.hl-ley{--c-kw:#b0226a;--c-cls:#005f8f;--c-fn:#8a5a00;--c-par:#b84a00;--
 .subbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;font-size:14px}
 .subley{display:flex;flex-wrap:wrap;gap:6px 12px}
 .sub-off .subley .sub{opacity:.45}
-/* Profesor en voz */
-.voz{border:1px solid var(--line);background:var(--paper);padding:10px 12px;margin:14px 0;font-size:14px}
-.voz-ctl{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px}
-.voz-ctl .btn{padding:7px 12px}
-.voz-ctl label{display:inline-flex;align-items:center;gap:6px;color:var(--muted)}
-.voz-ctl select{font:inherit;padding:5px 6px;border:1px solid var(--line);background:var(--paper);max-width:220px}
-.voz-box{display:none;margin-top:10px;border-top:1px solid var(--soft);padding-top:8px}
-.voz-box.on{display:block}
-.voz-pr{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px}
-.voz-bar{flex:1;height:4px;background:var(--soft)}
-.voz-bar i{display:block;height:100%;background:var(--ink);transition:width .3s}
-.voz-txt{margin:8px 0 0;font-size:15px;line-height:1.6}
-.voz-ya{background:rgb(255 210 0/.45);color:inherit;padding:.05em .1em;border-radius:.2em}
+/* Clase guiada con voz */
+.voz{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:14px 0;font-size:14px;color:var(--muted)}
+.voz .btn{padding:8px 14px}
+.prose h2,.prose h3,.prose .obj{scroll-margin-top:90px}
+.voz-luz{position:absolute;z-index:5;pointer-events:none;background:rgb(255 210 0/.16);mix-blend-mode:multiply;border-left:5px solid rgb(230 170 0);opacity:0;transition:opacity .35s,top .45s,height .45s}
+.voz-luz.on{opacity:1}
+.vozbar{position:fixed;left:50%;bottom:16px;transform:translate(-50%,140%);z-index:40;width:min(640px,calc(100% - 24px));background:var(--ink);color:var(--bg);box-shadow:0 8px 28px rgba(0,0,0,.28);transition:transform .3s;font-size:14px}
+.vozbar.on{transform:translate(-50%,0)}
+.vb-bar{height:3px;background:rgba(255,255,255,.18)}
+.vb-bar i{display:block;height:100%;width:0;background:rgb(255 210 0);transition:width .4s}
+.vb-in{display:flex;align-items:center;gap:6px;padding:8px 10px}
+.vozbar button{background:none;border:0;color:inherit;font:inherit;font-size:16px;width:36px;height:36px;cursor:pointer;flex:none}
+.vozbar button:hover{background:rgba(255,255,255,.12)}
+.vozbar .vb-play{background:rgb(255 210 0);color:var(--ink);font-size:15px}
+.vozbar .vb-play:hover{background:rgb(255 222 70)}
+.vb-txt{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.25;padding:0 6px}
+.vb-txt small{opacity:.65;font-size:12px}
+.vb-txt b{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vb-vel{font:inherit;background:transparent;color:inherit;border:1px solid rgba(255,255,255,.3);padding:4px}
+.vb-vel option{color:#121212}
+body.voz-abierta .pn{margin-bottom:84px}

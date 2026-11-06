@@ -1,108 +1,135 @@
-/* Profesor en voz: lee un guion breve por lección con la voz del navegador (Web Speech API).
-   Los guiones viven en VOZ (voz-datos.js): {"4-1":["párrafo", ...]}. No es la lección leída:
-   es una explicación hablada con lo que más pregunta el examen.
-   Se habla frase por frase: así la pausa es fiable y Chrome no corta textos largos. */
+/* Clase guiada con voz: recorre la lección sección por sección.
+   Para cada sección baja la página hasta ella, la resalta y reproduce la explicación del profesor.
+   Luego hace una pausa breve y sigue con la siguiente.
+   Guiones: VOZ en voz-datos.js, {"4-1":[{k:"título de sección",t:"texto"}, ...]}.
+   Audio: assets/audio/<id>/<n>.mp3, generado con voz neuronal. Si un archivo falta,
+   se usa la voz del navegador como respaldo. */
 (function(){
-  var S=window.speechSynthesis;
-  if(!S||!window.SpeechSynthesisUtterance)return;
-  var CLAVE="ai103-voz";
-  var pref={vel:1,voz:""};
-  try{var g=JSON.parse(localStorage.getItem(CLAVE)||"{}");if(g.vel)pref.vel=g.vel;if(g.voz)pref.voz=g.voz}catch(e){}
+  var CLAVE="ai103-voz",PAUSA=900;
+  var pref={vel:1};
+  try{var g=JSON.parse(localStorage.getItem(CLAVE)||"{}");if(g.vel)pref.vel=g.vel}catch(e){}
   function guarda(){try{localStorage.setItem(CLAVE,JSON.stringify(pref))}catch(e){}}
 
-  /* Voces en español, las de mejor calidad primero. */
-  function voces(){
-    return S.getVoices().filter(function(v){return /^es([-_]|$)/i.test(v.lang)}).sort(function(a,b){return nota(b)-nota(a)});
-  }
-  function nota(v){
-    var n=0,t=v.name;
-    if(/natural|online|neural/i.test(t))n+=8;
-    if(/google/i.test(t))n+=5;
-    if(/paulina|m[oó]nica|marisol|dalia|elena|sabina|helena|lucia|luc[ií]a/i.test(t))n+=4;
-    if(/es[-_](MX|US|419|PE|CO|AR|CL)/i.test(v.lang))n+=2;
-    if(v.localService===false)n+=1;
-    if(/eddy|flo\b|grandma|grandpa|reed|rocko|sandy|shelley|bells|bubbles|jester|organ|trinoids|whisper|zarvox|bahh|boing|wobble/i.test(t))n-=20;
-    return n;
-  }
-  function vozElegida(){
-    var vs=voces();
-    return vs.filter(function(v){return v.name===pref.voz})[0]||vs[0]||null;
-  }
+  var id="",seg=[],pos=0,leyendo=false,turno=0,audio=new Audio(),espera=null,barra=null,boton=null;
+  audio.preload="auto";
 
-  /* Estado de la lectura */
-  var guion=[],frases=[],pos=0,leyendo=false,turno=0,ui=null;
-  function trocea(ps){
-    var r=[];
-    ps.forEach(function(p,i){
-      p.split(/(?<=[.!?…]["»”]?)\s+/).forEach(function(f){f=f.trim();if(f)r.push({p:i,t:f})});
-    });
+  function limpia(s){return s.replace(/\s+/g," ").trim()}
+  /* Elementos de una sección: su título y lo que sigue hasta el próximo título. */
+  function zona(k){
+    var pr=document.querySelector("#app .prose");if(!pr)return [];
+    var r=[],n;
+    if(k==="Inicio"){
+      var o=pr.querySelector(".obj");if(!o)return [];
+      r=[o];n=o.nextElementSibling;
+      while(n&&!n.matches("h2,h3")){if(!n.matches(".voz,.subbar"))r.push(n);n=n.nextElementSibling}
+      return r;
+    }
+    var hs=pr.querySelectorAll("h2,h3"),h=null;
+    for(var i=0;i<hs.length;i++){var c=hs[i].cloneNode(true);c.querySelectorAll("small").forEach(function(x){x.remove()});
+      if(limpia(c.textContent)===k){h=hs[i];break}}
+    if(!h)return [];
+    r=[h];n=h.nextElementSibling;
+    while(n&&!n.matches("h2,h3")){r.push(n);n=n.nextElementSibling}
     return r;
   }
-  function habla(){
-    if(pos>=frases.length){fin();return}
-    var mio=++turno,f=frases[pos];
-    var u=new SpeechSynthesisUtterance(f.t);
-    var v=vozElegida();
-    if(v){u.voice=v;u.lang=v.lang}else u.lang="es-MX";
-    u.rate=pref.vel;
-    u.onend=function(){if(mio!==turno||!leyendo)return;pos++;habla()};
-    u.onerror=function(e){if(mio!==turno||!leyendo)return;if(e.error==="interrupted"||e.error==="canceled")return;pos++;habla()};
-    pinta();
-    S.speak(u);
+  /* Una sola franja de luz detrás de toda la sección, sin cortes entre bloques. */
+  var luz=null,zonaActual=[];
+  function ubica(){
+    if(!luz||!zonaActual.length)return;
+    var a=zonaActual[0].getBoundingClientRect(),z=zonaActual[zonaActual.length-1].getBoundingClientRect();
+    var pr=document.querySelector("#app .prose").getBoundingClientRect();
+    luz.style.top=(a.top+scrollY-8)+"px";luz.style.height=(z.bottom-a.top+16)+"px";
+    luz.style.left=(pr.left+scrollX-16)+"px";luz.style.width=(pr.width+32)+"px";
   }
+  function suelta(){zonaActual=[];if(luz)luz.classList.remove("on")}
+  function enfoca(){
+    zonaActual=zona(seg[pos].k);
+    if(!zonaActual.length){suelta();return}
+    if(!luz){luz=document.createElement("div");luz.className="voz-luz";document.body.appendChild(luz)}
+    ubica();luz.classList.add("on");
+    zonaActual[0].scrollIntoView({behavior:"smooth",block:"start"});
+  }
+  window.addEventListener("resize",ubica);
+
+  function siguiente(mio){
+    if(mio!==turno||!leyendo)return;
+    clearTimeout(espera);
+    espera=setTimeout(function(){if(mio!==turno||!leyendo)return;pos++;reproduce()},PAUSA);
+  }
+  /* Respaldo si falta el audio: voz del navegador. */
+  function respaldo(mio){
+    var S=window.speechSynthesis;if(!S){siguiente(mio);return}
+    var u=new SpeechSynthesisUtterance(seg[pos].t);u.lang="es-MX";u.rate=pref.vel;
+    u.onend=function(){siguiente(mio)};S.speak(u);
+  }
+  function reproduce(){
+    if(pos>=seg.length){termina();return}
+    var mio=++turno;
+    enfoca();pinta();
+    audio.onended=function(){siguiente(mio)};
+    audio.onerror=function(){if(mio===turno)respaldo(mio)};
+    audio.src="assets/audio/"+id+"/"+pos+".mp3";
+    audio.playbackRate=pref.vel;
+    var p=audio.play();if(p&&p.catch)p.catch(function(e){if(mio===turno&&e.name!=="AbortError")respaldo(mio)});
+  }
+  function calla(){turno++;clearTimeout(espera);audio.pause();if(window.speechSynthesis)speechSynthesis.cancel()}
   function play(){
-    if(!frases.length)return;
-    if(pos>=frases.length)pos=0;
-    leyendo=true;S.cancel();habla();
+    if(!seg.length)return;
+    if(pos>=seg.length)pos=0;
+    leyendo=true;muestra(true);
+    /* Si se pausó a mitad de una sección, continúa desde ese punto. */
+    if(audio.currentTime>0&&!audio.ended&&audio.getAttribute("src")==="assets/audio/"+id+"/"+pos+".mp3"){
+      var mio=++turno;audio.onended=function(){siguiente(mio)};audio.play();enfoca();pinta();
+    }else reproduce();
   }
-  function pausa(){leyendo=false;turno++;S.cancel();pinta()}
-  function fin(){leyendo=false;turno++;pos=0;pinta(true)}
+  function pausa(){leyendo=false;calla();pinta()}
+  function reinicia(){leyendo=false;calla();suelta();pos=0;audio.removeAttribute("src")}
+  function termina(){reinicia();pinta(true)}
   function salta(d){
-    var p=frases[Math.min(pos,frases.length-1)].p+d;
-    if(p<0)p=0;if(p>=guion.length){pausa();return}
-    for(var i=0;i<frases.length;i++)if(frases[i].p===p){pos=i;break}
-    if(leyendo){turno++;S.cancel();habla()}else pinta();
+    var n=pos+d;if(n<0)n=0;if(n>=seg.length)return;
+    calla();audio.removeAttribute("src");pos=n;
+    if(leyendo)reproduce();else{enfoca();pinta()}
+  }
+  function cierra(){reinicia();muestra(false);pinta()}
+
+  function muestra(si){if(barra)barra.classList.toggle("on",si);document.body.classList.toggle("voz-abierta",si)}
+  function pinta(fin){
+    if(boton)boton.textContent=leyendo?"❚❚ Pausar la clase":(pos>0?"▶ Continuar la clase":"▶ Clase guiada con voz");
+    if(!barra)return;
+    var b=barra.querySelector(".vb-play");
+    b.textContent=leyendo?"❚❚":"▶";b.setAttribute("aria-label",leyendo?"Pausar":"Reproducir");
+    var k=seg[Math.min(pos,seg.length-1)].k;
+    barra.querySelector(".vb-sec").textContent=fin?"Clase terminada":(k==="Inicio"?"Introducción":k);
+    barra.querySelector(".vb-n").textContent=fin?"":(pos+1)+" de "+seg.length;
+    barra.querySelector(".vb-bar i").style.width=(fin?100:Math.round(pos/seg.length*100))+"%";
   }
 
-  function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
-  function pinta(terminado){
-    if(!ui)return;
-    var f=frases[Math.min(pos,frases.length-1)],p=f.p;
-    ui.btn.textContent=leyendo?"❚❚ Pausar":(pos>0&&!terminado?"▶ Continuar":"▶ Escuchar al profesor");
-    ui.btn.setAttribute("aria-pressed",leyendo);
-    ui.box.classList.toggle("on",leyendo||pos>0||!!terminado);
-    ui.prog.textContent=terminado?"Explicación terminada":"Parte "+(p+1)+" de "+guion.length;
-    ui.bar.style.width=(terminado?100:Math.round(pos/frases.length*100))+"%";
-    ui.txt.innerHTML=frases.filter(function(x){return x.p===p}).map(function(x){
-      return x===f&&leyendo?'<mark class="voz-ya">'+esc(x.t)+'</mark>':esc(x.t)}).join(" ");
-  }
-  function llenaVoces(){
-    if(!ui)return;
-    var vs=voces(),sel=vozElegida();
-    ui.sel.innerHTML=vs.length?vs.map(function(v){
-      return '<option value="'+esc(v.name)+'"'+(sel&&v.name===sel.name?" selected":"")+'>'+esc(v.name.replace(/^Microsoft |^Google /,""))+' · '+v.lang+'</option>'}).join(""):'<option>Voz del sistema</option>';
-  }
-
-  function panel(){
+  function crea(){
+    var art=document.querySelector("#app article"),obj=art&&art.querySelector(".obj");
+    if(!obj)return;
+    var pal=seg.reduce(function(a,s){return a+s.t.split(/\s+/).length},0),min=Math.max(1,Math.round(pal/140));
     var d=document.createElement("div");d.className="voz";
-    d.innerHTML='<div class="voz-ctl">'+
-      '<button class="btn pri voz-play" type="button" aria-pressed="false">▶ Escuchar al profesor</button>'+
-      '<button class="btn voz-ant" type="button" title="Parte anterior" aria-label="Parte anterior">⏮</button>'+
-      '<button class="btn voz-sig" type="button" title="Parte siguiente" aria-label="Parte siguiente">⏭</button>'+
-      '<label>Velocidad <select class="voz-vel">'+[0.85,1,1.15,1.3,1.5].map(function(v){
-        return '<option value="'+v+'"'+(v===pref.vel?" selected":"")+'>'+String(v).replace(".",",")+'×</option>'}).join("")+'</select></label>'+
-      '<label>Voz <select class="voz-sel"></select></label></div>'+
-      '<div class="voz-box"><div class="voz-pr"><span class="voz-prog"></span><span class="voz-bar"><i></i></span></div><p class="voz-txt"></p></div>';
-    ui={btn:d.querySelector(".voz-play"),box:d.querySelector(".voz-box"),prog:d.querySelector(".voz-prog"),
-      bar:d.querySelector(".voz-bar i"),txt:d.querySelector(".voz-txt"),sel:d.querySelector(".voz-sel")};
-    ui.btn.addEventListener("click",function(){leyendo?pausa():play()});
-    d.querySelector(".voz-ant").addEventListener("click",function(){salta(-1)});
-    d.querySelector(".voz-sig").addEventListener("click",function(){salta(1)});
-    d.querySelector(".voz-vel").addEventListener("change",function(){
-      pref.vel=parseFloat(this.value);guarda();if(leyendo){turno++;S.cancel();habla()}});
-    ui.sel.addEventListener("change",function(){pref.voz=this.value;guarda();if(leyendo){turno++;S.cancel();habla()}});
-    llenaVoces();pinta();
-    return d;
+    d.innerHTML='<button class="btn pri" type="button">▶ Clase guiada con voz</button><span>El profesor recorre cada sección y explica lo importante. Unos '+min+' min.</span>';
+    boton=d.querySelector("button");
+    boton.addEventListener("click",function(){leyendo?pausa():play()});
+    obj.parentNode.insertBefore(d,obj.nextSibling);
+
+    barra=document.createElement("div");barra.className="vozbar";barra.setAttribute("role","region");barra.setAttribute("aria-label","Clase guiada con voz");
+    barra.innerHTML='<div class="vb-bar"><i></i></div><div class="vb-in">'+
+      '<button type="button" class="vb-ant" aria-label="Sección anterior" title="Sección anterior">⏮</button>'+
+      '<button type="button" class="vb-play" aria-label="Reproducir">▶</button>'+
+      '<button type="button" class="vb-sig" aria-label="Sección siguiente" title="Sección siguiente">⏭</button>'+
+      '<span class="vb-txt"><small class="vb-n"></small><b class="vb-sec"></b></span>'+
+      '<select class="vb-vel" aria-label="Velocidad">'+[0.9,1,1.15,1.3,1.5].map(function(v){
+        return '<option value="'+v+'"'+(v===pref.vel?" selected":"")+'>'+String(v).replace(".",",")+'×</option>'}).join("")+'</select>'+
+      '<button type="button" class="vb-x" aria-label="Cerrar" title="Cerrar">✕</button></div>';
+    barra.querySelector(".vb-play").addEventListener("click",function(){leyendo?pausa():play()});
+    barra.querySelector(".vb-ant").addEventListener("click",function(){salta(-1)});
+    barra.querySelector(".vb-sig").addEventListener("click",function(){salta(1)});
+    barra.querySelector(".vb-x").addEventListener("click",cierra);
+    barra.querySelector(".vb-vel").addEventListener("change",function(){pref.vel=parseFloat(this.value);guarda();audio.playbackRate=pref.vel});
+    document.body.appendChild(barra);
+    pinta();
   }
 
   function pasa(){
@@ -112,15 +139,11 @@
     var g=m&&window.VOZ&&VOZ[m[1]];
     if(!g||!g.length)return;
     art.dataset.voz="1";
-    guion=g;frases=trocea(g);pos=0;leyendo=false;
-    var obj=art.querySelector(".obj");
-    if(!obj)return;
-    obj.parentNode.insertBefore(panel(),obj.nextSibling);
+    id=m[1];seg=g;pos=0;leyendo=false;
+    crea();
   }
-  /* Al cambiar de página se calla. */
-  window.addEventListener("hashchange",function(){leyendo=false;turno++;S.cancel();ui=null});
-  window.addEventListener("pagehide",function(){S.cancel()});
-  if("onvoiceschanged" in S)S.addEventListener("voiceschanged",llenaVoces);
+  /* Al cambiar de página se calla y se quita la barra. */
+  window.addEventListener("hashchange",function(){reinicia();if(luz){luz.remove();luz=null}muestra(false);if(barra)barra.remove();barra=null;boton=null});
   new MutationObserver(pasa).observe(document.getElementById("app"),{childList:true,subtree:true});
-  S.cancel();pasa();
+  pasa();
 })();
